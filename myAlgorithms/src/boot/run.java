@@ -30,7 +30,7 @@ public class run {
 		System.out.println("BFS: " + bfs.getNumberOfNodesEvalueted() + " nodes evalueted.");
 		System.out.println("A*: " + aStrMan.getNumberOfNodesEvalueted() + " nodes evalueted.");
 		System.out.println("A*: " + aStrAir.getNumberOfNodesEvalueted() + " nodes evalueted.");
-		
+		System.out.println("yaniv was here");
 	}
 
 }
