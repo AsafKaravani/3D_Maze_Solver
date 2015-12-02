@@ -1,0 +1,135 @@
+package algorithms.mazeGenerators;
+
+public class Position implements Comparable<Position>{
+	//---------Variables---------//
+	private int layer;
+	private int row;
+	private int column;
+	private Maze3D insideOf;
+	
+	
+	//-----------Methods---------//
+	//	Constructors:
+	//		Default constructor
+	public Position(Maze3D insideOf){
+		layer = 0;
+		row = 0;
+		column = 0;
+		this.insideOf = insideOf;
+		
+	}
+	
+	//		Constructor
+	public Position(int layer, int row, int column,Maze3D insideOf){
+		this.layer = layer;
+		this.row = row;
+		this.column = column;
+		this.insideOf = insideOf;
+	}
+	
+	//		Copy Constructor
+	public Position(Position cell){
+		this.layer = cell.layer;
+		this.row = cell.row;
+		this.column = cell.column;
+		this.insideOf = cell.insideOf;
+	}
+	
+	//	Getters & Setters:
+	public int getLayer() {
+		return layer;
+	}
+	
+	public void setLayer(int layer) {
+		this.layer = layer;
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public void setRow(int row) {
+		this.row = row;
+	}
+	
+	public int getColumn() {
+		return column;
+	}
+	
+	public void setColumn(int column) {
+		this.column = column;
+	}
+	
+	//	Moving methods:
+	public boolean moveInLayers(int jumps){
+		if(layer + jumps >= insideOf.getMaze().length - 1 || layer + jumps <= 0)
+			return false;
+		else{
+			this.layer = this.layer + jumps;
+			return true;
+		}
+	}
+	
+	public boolean moveInRows(int jumps){
+		if(row + jumps >= insideOf.getMaze()[0].length - 1 || row + jumps <= 0)
+			return false;
+		else{
+			this.row = this.row + jumps;
+			return true;
+		}
+	}
+	
+	public boolean moveInColumns(int jumps){
+		if(column + jumps >= insideOf.getMaze()[0][0].length - 1 || column + jumps <= 0)
+			return false;
+		else{
+			this.column = this.column + jumps;
+			return true;
+		}
+	}
+	
+	
+	public String toString(){
+		return "(" + layer + ", " + row + ", " + column + ")";
+	}
+
+	@Override
+	public int compareTo(Position pos) {
+		
+		return Math.abs(this.toString().compareTo(pos.toString()));
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + column;
+		result = prime * result + layer;
+		result = prime * result + row;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Position other = (Position) obj;
+		if (column != other.column)
+			return false;
+		if (layer != other.layer)
+			return false;
+		if (row != other.row)
+			return false;
+		return true;
+	}
+
+	
+
+
+
+	
+}
