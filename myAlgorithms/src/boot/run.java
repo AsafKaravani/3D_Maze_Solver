@@ -19,8 +19,7 @@ public class run {
 		AStar aStrMan = new AStar(new MazeManhattenDistance(), maze.getGoalState());
 		AStar aStrAir =  new AStar(new MazeAirDistance(), maze.getGoalState());
 
-		Solution<Position> sol1 = bfs
-				.search(maze);
+		Solution<Position> sol1 = bfs.search(maze);
 		Solution<Position> sol2 = aStrMan.search(maze);
 		Solution<Position> sol3 =aStrAir.search(maze);
 		
@@ -30,6 +29,7 @@ public class run {
 		System.out.println("BFS: " + bfs.getNumberOfNodesEvalueted() + " nodes evalueted.");
 		System.out.println("A*: " + aStrMan.getNumberOfNodesEvalueted() + " nodes evalueted.");
 		System.out.println("A*: " + aStrAir.getNumberOfNodesEvalueted() + " nodes evalueted.");
+		
 		
 	}
 
