@@ -38,6 +38,9 @@ public class run {
 		
 		System.out.println();
 		byte[] bytes=maze.toByteArray();
+		Maze3D theMaze = new Maze3D(bytes);
+		theMaze.toString();
+		System.out.println(theMaze);
 		OutputStream out = null;
 		try {
 			 out = new FileOutputStream("C:\\Users\\Asaf\\git\\my-algorithms\\myAlgorithms\\bin\\boot\\New Text Document");
