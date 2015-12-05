@@ -28,6 +28,19 @@ public class Maze3D implements Searchable<Position> {
 		}
 	}
 
+	public Maze3D(byte[] thebyte) {
+		int count=3;
+		
+		for (int layerIndex = 0; layerIndex <(int) thebyte[0]; layerIndex++) {
+			for (int rowIndex = 0; rowIndex <(int)thebyte[1] ; rowIndex++) {
+				for (int columnIndex = 0; columnIndex <(int)thebyte[2]; columnIndex++) {
+					maze[layerIndex][rowIndex][columnIndex]=(int)thebyte[count];
+					count++;
+				}
+			}
+		}
+	}
+
 	// Getters & Setters:
 	public int[][][] getMaze() {
 		return maze;
@@ -151,8 +164,12 @@ public class Maze3D implements Searchable<Position> {
 	}
 
 	public byte[] toByteArray() {
-		int count = 0;
-		byte[] theByte = new byte[maze.length * maze[0].length * maze[0][0].length];
+		
+		byte[] theByte = new byte[maze.length * maze[0].length * (maze[0][0].length+3)];
+		theByte[0]=(byte) maze.length;
+		theByte[1]=(byte) maze[0].length;
+		theByte[2]=(byte) maze[0][0].length;
+		int count = 3;
 		for (int indexLayer = 0; indexLayer < maze.length; indexLayer++) {
 			for (int indexRow = 0; indexRow < maze[0].length; indexRow++) {
 				for (int indexColumn = 0; indexColumn < maze[0][0].length; indexColumn++) {
