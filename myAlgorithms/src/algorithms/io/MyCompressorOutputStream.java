@@ -11,7 +11,6 @@ public class MyCompressorOutputStream extends OutputStream{
 	OutputStream out;
 
 	public MyCompressorOutputStream(OutputStream out){
-		
 		this.out=out;
 	}
 	
@@ -45,8 +44,7 @@ public class MyCompressorOutputStream extends OutputStream{
 							e.printStackTrace();
 						}
 					
-						count = 0;
-						
+						count = 0;	
 					}
 					
 				}

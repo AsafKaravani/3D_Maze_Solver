@@ -37,7 +37,7 @@ public class run {
 		System.out.println("A*: " + aStrAir.getNumberOfNodesEvalueted() + " nodes evalueted.");
 		
 		System.out.println();
-		
+		byte[] bytes=maze.toByteArray();
 		OutputStream out = null;
 		try {
 			 out = new FileOutputStream("C:\\Users\\Asaf\\git\\my-algorithms\\myAlgorithms\\bin\\boot\\New Text Document");
