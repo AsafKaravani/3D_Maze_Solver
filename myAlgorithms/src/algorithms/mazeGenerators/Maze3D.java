@@ -30,6 +30,9 @@ public class Maze3D implements Searchable<Position> {
 
 	public Maze3D(byte[] thebyte) {
 		int count=3;
+		startPoint = new Position(1,1,1,this);
+		endPoint = new Position((int) thebyte[0] - 2,(int)thebyte[1] - 2,(int)thebyte[2] - 2,this);
+		maze = new int[(int) thebyte[0]][(int)thebyte[1]][(int)thebyte[2]];
 		
 		for (int layerIndex = 0; layerIndex <(int) thebyte[0]; layerIndex++) {
 			for (int rowIndex = 0; rowIndex <(int)thebyte[1] ; rowIndex++) {
