@@ -1,5 +1,11 @@
 package boot;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import algorithms.io.MyCompressorOutputStream;
 import algorithms.mazeGenerators.Maze3D;
 import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.myMaze3DGenerator;
@@ -29,6 +35,21 @@ public class run {
 		System.out.println("BFS: " + bfs.getNumberOfNodesEvalueted() + " nodes evalueted.");
 		System.out.println("A*: " + aStrMan.getNumberOfNodesEvalueted() + " nodes evalueted.");
 		System.out.println("A*: " + aStrAir.getNumberOfNodesEvalueted() + " nodes evalueted.");
+		
+		System.out.println();
+		
+		OutputStream out = null;
+		try {
+			 out = new FileOutputStream("C:\\Users\\Asaf\\git\\my-algorithms\\myAlgorithms\\bin\\boot\\New Text Document");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		if (out != null){
+			MyCompressorOutputStream myOut = new MyCompressorOutputStream(out);
+			myOut.compress(maze);
+		}
+		
 		
 		
 	}
