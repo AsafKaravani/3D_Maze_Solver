@@ -245,9 +245,6 @@ public class Maze3D implements Searchable<Position>, Compressible{
 		
 		return longMaze;
 	}
-public void fuckyou(){
-	
-}
 	// Other Methods:
 
 }
