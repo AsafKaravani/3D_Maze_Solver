@@ -52,9 +52,5 @@ public class run {
 			MyCompressorOutputStream myOut = new MyCompressorOutputStream(out);
 			myOut.compress(maze);
 		}
-		
-		
-		
 	}
-
 }
