@@ -1,11 +1,13 @@
 package boot;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import algorithms.io.MyCompressorOutputStream;
+import algorithms.io.MyDecompressorInputStream;
 import algorithms.mazeGenerators.Maze3D;
 import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.myMaze3DGenerator;
@@ -20,7 +22,7 @@ import algorithms.search.State;
 public class run {
 
 	public static void main(String[] args) {
-		Maze3D maze = new myMaze3DGenerator().generate(5, 7, 7);
+		Maze3D maze = new myMaze3DGenerator().generate(5, 9, 9);
 		BestFirstSearch bfs = new BestFirstSearch();
 		AStar aStrMan = new AStar(new MazeManhattenDistance(), maze.getGoalState());
 		AStar aStrAir =  new AStar(new MazeAirDistance(), maze.getGoalState());
@@ -37,19 +39,31 @@ public class run {
 		System.out.println("A*: " + aStrAir.getNumberOfNodesEvalueted() + " nodes evalueted.");
 		
 		System.out.println();
-		maze.compress();
-		maze.deCompress(maze.compress());
-		System.out.println(maze);
-		/*OutputStream out = null;
+	
 		try {
-			 out = new FileOutputStream("C:\\Users\\Asaf\\git\\my-algorithms\\myAlgorithms\\bin\\boot\\New Text Document");
+			MyCompressorOutputStream<Maze3D> myComp = new MyCompressorOutputStream<Maze3D>(new FileOutputStream("C:\\Users\\Asaf\\git\\my-algorithms\\myAlgorithms\\assets\\mazeSream"));
+			myComp.writeObject(maze);
+			myComp.close();
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		if (out != null){
-			MyCompressorOutputStream myOut = new MyCompressorOutputStream(out);
-		}*/	
+		try {
+			MyDecompressorInputStream<Maze3D> myDecomp = new MyDecompressorInputStream<Maze3D>(new FileInputStream("C:\\Users\\Asaf\\git\\my-algorithms\\myAlgorithms\\assets\\mazeSream"));
+			Maze3D readMaze = new Maze3D(myDecomp.readObject(maze));
+			System.out.println("The maze that was read:");
+			System.out.println(readMaze);
+			myDecomp.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }

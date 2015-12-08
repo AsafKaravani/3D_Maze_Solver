@@ -190,7 +190,7 @@ public class Maze3D implements Searchable<Position>, Compressible{
 
 	@Override
 	public byte[] compress() {
-		int count = 0;
+		int count = -1;
 		int lastBit = -1;
 		ArrayList<Byte> compressedMaze = new ArrayList<Byte>(); 
 		for (int indexLayer = 0; indexLayer <maze.length; indexLayer++) {
@@ -202,6 +202,7 @@ public class Maze3D implements Searchable<Position>, Compressible{
 						lastBit = maze[indexLayer][indexRow][indexColumn];
 					}
 					else{
+						count++;
 							compressedMaze.add((byte)lastBit);
 							compressedMaze.add((byte)count);
 							lastBit = maze[indexLayer][indexRow][indexColumn];
