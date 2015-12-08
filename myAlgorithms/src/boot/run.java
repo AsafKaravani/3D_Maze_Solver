@@ -37,11 +37,10 @@ public class run {
 		System.out.println("A*: " + aStrAir.getNumberOfNodesEvalueted() + " nodes evalueted.");
 		
 		System.out.println();
-		byte[] bytes=maze.toByteArray();
-		Maze3D theMaze = new Maze3D(bytes);
-		theMaze.toString();
-		System.out.println(theMaze);
-		OutputStream out = null;
+		maze.compress();
+		maze.deCompress(maze.compress());
+		System.out.println(maze);
+		/*OutputStream out = null;
 		try {
 			 out = new FileOutputStream("C:\\Users\\Asaf\\git\\my-algorithms\\myAlgorithms\\bin\\boot\\New Text Document");
 		} catch (FileNotFoundException e) {
@@ -50,11 +49,7 @@ public class run {
 		
 		if (out != null){
 			MyCompressorOutputStream myOut = new MyCompressorOutputStream(out);
-			myOut.compress(maze);
-		}
-		
-		
-		
+		}*/	
 	}
 
 }

@@ -1,11 +1,15 @@
 package algorithms.mazeGenerators;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import com.sun.org.apache.bcel.internal.util.ByteSequence;
+
+import algorithms.io.Compressible;
 import algorithms.search.Searchable;
 import algorithms.search.State;
 
-public class Maze3D implements Searchable<Position> {
+public class Maze3D implements Searchable<Position>, Compressible{
 	// ---------Variables---------//
 	private int[][][] maze;
 	private Position startPoint;
@@ -182,6 +186,64 @@ public class Maze3D implements Searchable<Position> {
 			}
 		}
 		return theByte;
+	}
+
+	@Override
+	public byte[] compress() {
+		int count = 0;
+		int lastBit = -1;
+		ArrayList<Byte> compressedMaze = new ArrayList<Byte>(); 
+		for (int indexLayer = 0; indexLayer <maze.length; indexLayer++) {
+			for (int indexRow = 0; indexRow < maze[0].length; indexRow++) {
+				for (int indexColumn = 0; indexColumn < maze[0][0].length; indexColumn++) {
+				
+					if (lastBit == maze[indexLayer][indexRow][indexColumn] || lastBit == -1) {
+						count++;
+						lastBit = maze[indexLayer][indexRow][indexColumn];
+					}
+					else{
+							compressedMaze.add((byte)lastBit);
+							compressedMaze.add((byte)count);
+							lastBit = maze[indexLayer][indexRow][indexColumn];
+						count = 0;	
+						}
+				}
+			}
+		}
+		byte[] bytes=new byte[compressedMaze.size()];
+		for (int i = 0; i < bytes.length; i++) {
+			bytes[i]=compressedMaze.get(i);
+		}
+		return bytes;
+	}
+
+	@Override
+	public byte[] deCompress(byte[] compressed) {
+		int serial=0;
+		int count=0;
+		int keper=0;
+		byte[] longMaze=new byte[compressed.length];
+		
+		for (int i = 0; i < compressed.length; i++) {
+			keper=compressed[i];
+			if(i%2==0){
+		serial=compressed[i];
+				for (int j = 0; j < serial; j++) {
+					if(keper==1){
+						longMaze[count]=1;
+						serial++;
+					}
+					else{
+						longMaze[count]=0;
+						serial++;
+					}
+				}
+			}
+		}
+    		
+		
+		
+		return longMaze;
 	}
 
 	// Other Methods:
