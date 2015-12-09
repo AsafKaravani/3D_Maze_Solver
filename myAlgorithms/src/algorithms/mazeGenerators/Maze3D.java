@@ -9,7 +9,7 @@ import algorithms.io.Compressible;
 import algorithms.search.Searchable;
 import algorithms.search.State;
 
-public class Maze3D implements Searchable<Position>, Compressible{
+public class Maze3D implements Searchable<Position>, Compressible {
 	// ---------Variables---------//
 	private int[][][] maze;
 	private Position startPoint;
@@ -33,15 +33,15 @@ public class Maze3D implements Searchable<Position>, Compressible{
 	}
 
 	public Maze3D(byte[] thebyte) {
-		int count=3;
-		startPoint = new Position(1,1,1,this);
-		endPoint = new Position((int) thebyte[0] - 2,(int)thebyte[1] - 2,(int)thebyte[2] - 2,this);
-		maze = new int[(int) thebyte[0]][(int)thebyte[1]][(int)thebyte[2]];
-		
-		for (int layerIndex = 0; layerIndex <(int) thebyte[0]; layerIndex++) {
-			for (int rowIndex = 0; rowIndex <(int)thebyte[1] ; rowIndex++) {
-				for (int columnIndex = 0; columnIndex <(int)thebyte[2]; columnIndex++) {
-					maze[layerIndex][rowIndex][columnIndex]=(int)thebyte[count];
+		int count = 3;
+		startPoint = new Position(1, 1, 1, this);
+		endPoint = new Position((int) thebyte[0] - 2, (int) thebyte[1] - 2, (int) thebyte[2] - 2, this);
+		maze = new int[(int) thebyte[0]][(int) thebyte[1]][(int) thebyte[2]];
+
+		for (int layerIndex = 0; layerIndex < (int) thebyte[0]; layerIndex++) {
+			for (int rowIndex = 0; rowIndex < (int) thebyte[1]; rowIndex++) {
+				for (int columnIndex = 0; columnIndex < (int) thebyte[2]; columnIndex++) {
+					maze[layerIndex][rowIndex][columnIndex] = (int) thebyte[count];
 					count++;
 				}
 			}
@@ -171,11 +171,11 @@ public class Maze3D implements Searchable<Position>, Compressible{
 	}
 
 	public byte[] toByteArray() {
-		
-		byte[] theByte = new byte[maze.length * maze[0].length * (maze[0][0].length+3)];
-		theByte[0]=(byte) maze.length;
-		theByte[1]=(byte) maze[0].length;
-		theByte[2]=(byte) maze[0][0].length;
+
+		byte[] theByte = new byte[maze.length * maze[0].length * (maze[0][0].length + 3)];
+		theByte[0] = (byte) maze.length;
+		theByte[1] = (byte) maze[0].length;
+		theByte[2] = (byte) maze[0][0].length;
 		int count = 3;
 		for (int indexLayer = 0; indexLayer < maze.length; indexLayer++) {
 			for (int indexRow = 0; indexRow < maze[0].length; indexRow++) {
@@ -192,59 +192,57 @@ public class Maze3D implements Searchable<Position>, Compressible{
 	public byte[] compress() {
 		int count = -1;
 		int lastBit = -1;
-		ArrayList<Byte> compressedMaze = new ArrayList<Byte>(); 
-		for (int indexLayer = 0; indexLayer <maze.length; indexLayer++) {
+		ArrayList<Byte> compressedMaze = new ArrayList<Byte>();
+		for (int indexLayer = 0; indexLayer < maze.length; indexLayer++) {
 			for (int indexRow = 0; indexRow < maze[0].length; indexRow++) {
 				for (int indexColumn = 0; indexColumn < maze[0][0].length; indexColumn++) {
-				
+
 					if (lastBit == maze[indexLayer][indexRow][indexColumn] || lastBit == -1) {
 						count++;
 						lastBit = maze[indexLayer][indexRow][indexColumn];
-					}
-					else{
+					} else {
 						count++;
-							compressedMaze.add((byte)lastBit);
-							compressedMaze.add((byte)count);
-							lastBit = maze[indexLayer][indexRow][indexColumn];
-						count = 0;	
-						}
+						compressedMaze.add((byte) lastBit);
+						compressedMaze.add((byte) count);
+						lastBit = maze[indexLayer][indexRow][indexColumn];
+						count = 0;
+					}
 				}
 			}
 		}
-		byte[] bytes=new byte[compressedMaze.size()];
+		byte[] bytes = new byte[compressedMaze.size()];
 		for (int i = 0; i < bytes.length; i++) {
-			bytes[i]=compressedMaze.get(i);
+			bytes[i] = compressedMaze.get(i);
 		}
 		return bytes;
 	}
 
 	@Override
 	public byte[] deCompress(byte[] compressed) {
-		int serial=0;
-		int count=0;
-		int keeper=0;
-		byte[] longMaze=new byte[compressed.length];
-		
+		int serial = 0;
+		int count = 0;
+		int keeper = 0;
+		ArrayList<Byte> longMaze = new ArrayList<Byte>();
+
 		for (int i = 0; i < compressed.length; i++) {
-			keeper=compressed[i];
-			if(i%2!=0){
-				serial=compressed[i];
+			keeper = compressed[i];
+			if (i % 2 != 0) {
+				serial = compressed[i];
 				for (int j = 0; j < serial; j++) {
-					if(keeper==1){
-						longMaze[count]=1;
-						serial++;
-					}
-					else{
-						longMaze[count]=0;
-						serial++;
+					if (keeper == 1) {
+						longMaze.add((byte) 1);
+					} else {
+						longMaze.add((byte) 0);
 					}
 				}
 			}
 		}
-    		
-		
-		
-		return longMaze;
+		byte[] theByte = new byte[longMaze.size()];
+		for (int i = 0; i < theByte.length; i++) {
+			theByte[i]=longMaze.get(i);
+		}
+
+		return theByte;
 	}
 	// Other Methods:
 
