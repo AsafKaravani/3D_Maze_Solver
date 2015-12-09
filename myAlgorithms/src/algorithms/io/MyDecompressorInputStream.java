@@ -20,6 +20,13 @@ public class MyDecompressorInputStream<T extends Compressible> extends InputStre
 	
 	public byte[] readObject(T obj) throws IOException{
 		ArrayList<Byte> bytesFromStream = new ArrayList<Byte>(); 
+		read();
+		bytesFromStream.add(buffer[0]);
+		read();
+		bytesFromStream.add(buffer[0]);
+		read();
+		bytesFromStream.add(buffer[0]);
+		
 		while(read() != -1)
 			bytesFromStream.add(buffer[0]);
 		

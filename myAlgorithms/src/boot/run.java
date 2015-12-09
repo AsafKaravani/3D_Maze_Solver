@@ -22,7 +22,7 @@ import algorithms.search.State;
 public class run {
 
 	public static void main(String[] args) {
-		Maze3D maze = new myMaze3DGenerator().generate(5, 9, 9);
+		Maze3D maze = new myMaze3DGenerator().generate(5, 7, 7);
 		BestFirstSearch bfs = new BestFirstSearch();
 		AStar aStrMan = new AStar(new MazeManhattenDistance(), maze.getGoalState());
 		AStar aStrAir =  new AStar(new MazeAirDistance(), maze.getGoalState());
