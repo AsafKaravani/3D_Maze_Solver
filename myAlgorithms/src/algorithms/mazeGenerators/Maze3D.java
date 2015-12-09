@@ -222,15 +222,15 @@ public class Maze3D implements Searchable<Position>, Compressible{
 	public byte[] deCompress(byte[] compressed) {
 		int serial=0;
 		int count=0;
-		int keper=0;
+		int keeper=0;
 		byte[] longMaze=new byte[compressed.length];
 		
 		for (int i = 0; i < compressed.length; i++) {
-			keper=compressed[i];
-			if(i%2==0){
-		serial=compressed[i];
+			keeper=compressed[i];
+			if(i%2!=0){
+				serial=compressed[i];
 				for (int j = 0; j < serial; j++) {
-					if(keper==1){
+					if(keeper==1){
 						longMaze[count]=1;
 						serial++;
 					}
