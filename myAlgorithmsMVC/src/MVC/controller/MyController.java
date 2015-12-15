@@ -11,14 +11,25 @@ public class MyController implements Controller {
 	View view;
 	Model model;
 	
-	public MyController(View view, Model model){
-		this.view = view;
-		this.model = model;
+	public MyController(){
+
 	}
 	public void start(){
 		
 	}
 
+	public View getView() {
+		return view;
+	}
+	public void setView(View view) {
+		this.view = view;
+	}
+	public Model getModel() {
+		return model;
+	}
+	public void setModel(Model model) {
+		this.model = model;
+	}
 	@Override
 	public void convert() {
 		model.convert();
@@ -43,7 +54,7 @@ public class MyController implements Controller {
 			
 			@Override
 			public void doCommand(String[] args) {
-			Maze3D newMaze=new Maze3D(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));	
+				model.generateMaze(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 				
 			}
 		});

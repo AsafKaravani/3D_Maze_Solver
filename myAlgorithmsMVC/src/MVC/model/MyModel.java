@@ -1,7 +1,11 @@
 package MVC.model;
 
 import MVC.controller.Controller;
-import MVC.controller.MyController;
+import algorithms.mazeGenerators.Maze3D;
+import algorithms.mazeGenerators.myMaze3DGenerator;
+import algorithms.search.AStar;
+import algorithms.search.MazeAirDistance;
+import algorithms.search.Solution;
 
 public class MyModel implements Model {
 
@@ -9,12 +13,11 @@ public class MyModel implements Model {
 
 	@Override
 	public void convert() {
-		// TODO Auto-generated method stub
 		
 	}
 	
-	public MyModel(){
-		
+	public MyModel(Controller ctrl){
+		this.ctrl = ctrl;
 	}
 
 	public Controller getCtrl() {
@@ -24,5 +27,16 @@ public class MyModel implements Model {
 	public void setCtrl(Controller ctrl) {
 		this.ctrl = ctrl;
 	}
+
 	
+	public Maze3D generateMaze(int layers, int rows, int columns){
+		
+		return new myMaze3DGenerator().generate(layers, rows, columns);
+		
+	}
+	
+	public Solution solveMaze(Maze3D maze){
+		
+		return  new AStar(new MazeAirDistance(), maze.getGoalState()).search(maze);
+	}
 }

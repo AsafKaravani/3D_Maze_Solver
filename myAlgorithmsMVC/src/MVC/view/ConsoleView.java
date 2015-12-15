@@ -13,7 +13,8 @@ public class ConsoleView implements View {
 	Controller ctrl;
 	CLI cli;
 	
-	public ConsoleView(){
+	public ConsoleView(Controller ctrl){
+		this.ctrl = ctrl;
 		HashMap<String, Command> commandMap = ctrl.initCommands();
 		cli = new CLI(commandMap, new OutputStreamWriter(System.out),new InputStreamReader(System.in));
 	}
