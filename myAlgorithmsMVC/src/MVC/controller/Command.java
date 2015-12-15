@@ -1,4 +1,4 @@
-package CLI.controller;
+package MVC.controller;
 
 public interface Command {
 	void doCommand();
