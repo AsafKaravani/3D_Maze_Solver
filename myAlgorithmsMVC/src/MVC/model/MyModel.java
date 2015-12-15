@@ -13,4 +13,8 @@ public class MyModel implements Model {
 		
 	}
 	
+	public MyModel(	Controller ctrl){
+		this.ctrl = ctrl;
+	}
+	
 }

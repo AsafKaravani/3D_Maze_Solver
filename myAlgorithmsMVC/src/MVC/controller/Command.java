@@ -1,6 +1,6 @@
 package MVC.controller;
 
 public interface Command {
-	void doCommand();
+	void doCommand(String[] args);
 	void print();
 }

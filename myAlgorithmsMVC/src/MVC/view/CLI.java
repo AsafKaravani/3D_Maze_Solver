@@ -36,8 +36,9 @@ public class CLI implements Runnable{
 					System.exit(0);
 				else if(commandName == "help")
 					printAllCommands();
-				else if(commandMap.containsKey(commandName))
-					commandMap.get(commandName).doCommand();
+				else if(commandMap.containsKey(commandName)){
+					commandMap.get(commandName).doCommand(new String[]{"5", "5", "5"});
+				}
 				else{
 					System.out.println("Invalid command. Please enter a command: ");
 					printAllCommands();
