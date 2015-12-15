@@ -9,6 +9,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import CLI.controller.Command;
 
@@ -30,16 +33,33 @@ public class CLI implements Runnable{
 	}
 
 	private void start() {
-		try {
-			do {
-				
-			} while (in.readLine() != "exit");
-		} catch (IOException e) {
-			e.printStackTrace();
+		String commandName;
+		while(true){
+			try {
+				commandName = in.readLine();
+				if(commandName == "exit")
+					System.exit(0);
+				else if(commandName == "help")
+					printAllCommands();
+				else if(commandMap.containsKey(commandName))
+					commandMap.get(commandName).doCommand();
+				else{
+					System.out.println("Invalid command. Please enter a command: ");
+					printAllCommands();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
 	
+	private void printAllCommands() {
+		for (Map.Entry<String, Command> entry : commandMap.entrySet()) {
+			if(entry.getValue() != null)
+				entry.getValue().print();
+		}
+	}
 	
 	
 }
