@@ -13,7 +13,15 @@ public class MyModel implements Model {
 		
 	}
 	
-	public MyModel(	Controller ctrl){
+	public MyModel(){
+		
+	}
+
+	public Controller getCtrl() {
+		return ctrl;
+	}
+
+	public void setCtrl(Controller ctrl) {
 		this.ctrl = ctrl;
 	}
 	

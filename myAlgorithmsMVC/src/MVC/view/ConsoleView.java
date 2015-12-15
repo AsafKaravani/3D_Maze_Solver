@@ -13,8 +13,7 @@ public class ConsoleView implements View {
 	Controller ctrl;
 	CLI cli;
 	
-	public ConsoleView(Controller ctrl){
-		this.ctrl = ctrl;
+	public ConsoleView(){
 		HashMap<String, Command> commandMap = ctrl.initCommands();
 		cli = new CLI(commandMap, new OutputStreamWriter(System.out),new InputStreamReader(System.in));
 	}
@@ -28,6 +27,14 @@ public class ConsoleView implements View {
 		System.out.println("Welcome to the Maze3D game, please enter a command: ");
 		start();
 		
+	}
+
+	public Controller getCtrl() {
+		return ctrl;
+	}
+
+	public void setCtrl(Controller ctrl) {
+		this.ctrl = ctrl;
 	}
 	
 }

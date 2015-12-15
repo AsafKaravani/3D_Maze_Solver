@@ -1,13 +1,16 @@
 package boot;
 
 import MVC.controller.MyController;
+import MVC.model.Model;
 import MVC.view.ConsoleView;
+import MVC.view.View;
 import model.MyModel;
 
 public class Run {
 	
-	MyModel model= new MyModel();
-	MyController ctrl = new MyController();
-	ConsoleView view = new ConsoleView(ctrl);
 
+
+	MyModel model= new MyModel();
+	ConsoleView view = new ConsoleView();
+	MyController ctrl = new MyController(view, model);
 }
