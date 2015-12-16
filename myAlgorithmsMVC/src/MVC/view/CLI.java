@@ -32,17 +32,19 @@ public class CLI implements Runnable{
 		while(true){
 			try {
 				commandName = in.readLine();
-				if(commandName == "exit")
+				if(commandName.equals("exit")){
+					System.out.println("Thank you for playing)");
 					System.exit(0);
-				else if(commandName == "help")
-					printAllCommands();
-				else if(commandMap.containsKey(commandName)){
-					commandMap.get(commandName).doCommand(new String[]{"5", "5", "5"});
 				}
-				else{
-					System.out.println("Invalid command. Please enter a command: ");
+				else if(commandName.equals("help"))
 					printAllCommands();
+				else {
+					String[] splitedCommand = commandName.split(" ");
+					for(int n = splitedCommand.length - 1; n >= 0; n--){
+						
+					}
 				}
+					
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
