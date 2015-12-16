@@ -1,5 +1,4 @@
 package MVC.model;
-
 import MVC.controller.Controller;
 import algorithms.mazeGenerators.Maze3D;
 import algorithms.mazeGenerators.myMaze3DGenerator;
