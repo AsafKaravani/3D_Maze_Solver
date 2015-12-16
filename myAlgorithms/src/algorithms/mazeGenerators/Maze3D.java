@@ -12,6 +12,7 @@ import algorithms.search.State;
 public class Maze3D implements Searchable<Position>, Compressible {
 	// ---------Variables---------//
 	private int[][][] maze;
+	private String mazeName;
 	private Position startPoint;
 	private Position endPoint;
 
@@ -32,9 +33,24 @@ public class Maze3D implements Searchable<Position>, Compressible {
 		}
 	}
 
+	public Maze3D(String mazeName, int layer, int row, int column) {
+		maze = new int[layer][row][column];
+		this.mazeName = mazeName;
+		for (int layerIndex = 0; layerIndex < layer; layerIndex++) {
+			for (int rowIndex = 0; rowIndex < row; rowIndex++) {
+				for (int columnIndex = 0; columnIndex < column; columnIndex++) {
+					if (layerIndex == 0 || layerIndex == (layer - 1))
+						setCellAsWall(layerIndex, rowIndex, columnIndex);
+					if (rowIndex == 0 || rowIndex == (row - 1) || columnIndex == 0 || columnIndex == (column - 1))
+						setCellAsWall(layerIndex, rowIndex, columnIndex);
+				}
+			}
+		}
+	}
+
 	public Maze3D(byte[] thebyte) {
 		int count = 9;
-		startPoint = new Position((int)thebyte[3],(int)thebyte[4],(int)thebyte[5] , this);
+		startPoint = new Position((int) thebyte[3], (int) thebyte[4], (int) thebyte[5], this);
 		endPoint = new Position((int) thebyte[6], (int) thebyte[7], (int) thebyte[8], this);
 		maze = new int[(int) thebyte[0]][(int) thebyte[1]][(int) thebyte[2]];
 
@@ -83,6 +99,14 @@ public class Maze3D implements Searchable<Position>, Compressible {
 
 	public void setCellValue(Position pos, int newValue) {
 
+	}
+
+	public String getMazeName() {
+		return mazeName;
+	}
+
+	public void setMazeName(String mazeName) {
+		this.mazeName = mazeName;
 	}
 
 	// Object methods:
@@ -197,29 +221,28 @@ public class Maze3D implements Searchable<Position>, Compressible {
 		compressedMaze.add((byte) maze.length);
 		compressedMaze.add((byte) maze[0].length);
 		compressedMaze.add((byte) maze[0][0].length);
-		compressedMaze.add((byte)startPoint.getLayer());
-		compressedMaze.add((byte)startPoint.getRow());
-		compressedMaze.add((byte)startPoint.getColumn());
-		compressedMaze.add((byte)endPoint.getLayer());
-		compressedMaze.add((byte)endPoint.getRow());
-		compressedMaze.add((byte)endPoint.getColumn());
+		compressedMaze.add((byte) startPoint.getLayer());
+		compressedMaze.add((byte) startPoint.getRow());
+		compressedMaze.add((byte) startPoint.getColumn());
+		compressedMaze.add((byte) endPoint.getLayer());
+		compressedMaze.add((byte) endPoint.getRow());
+		compressedMaze.add((byte) endPoint.getColumn());
 		for (int indexLayer = 0; indexLayer < maze.length; indexLayer++) {
 			for (int indexRow = 0; indexRow < maze[0].length; indexRow++) {
 				for (int indexColumn = 0; indexColumn < maze[0][0].length; indexColumn++) {
 					j++;
-					
-					  if(j  == (maze.length * maze[0].length * maze[0][0].length)){
-							compressedMaze.add((byte) lastBit);
-							compressedMaze.add((byte) (count + 2));
-							lastBit = maze[indexLayer][indexRow][indexColumn];
-							count = 0;
-						}
-					 else if (lastBit == maze[indexLayer][indexRow][indexColumn] || lastBit == -1) {
+
+					if (j == (maze.length * maze[0].length * maze[0][0].length)) {
+						compressedMaze.add((byte) lastBit);
+						compressedMaze.add((byte) (count + 2));
+						lastBit = maze[indexLayer][indexRow][indexColumn];
+						count = 0;
+					} else if (lastBit == maze[indexLayer][indexRow][indexColumn] || lastBit == -1) {
 						count++;
 						lastBit = maze[indexLayer][indexRow][indexColumn];
-						
+
 					}
-					
+
 					else {
 						count++;
 						compressedMaze.add((byte) lastBit);
@@ -243,7 +266,7 @@ public class Maze3D implements Searchable<Position>, Compressible {
 		int count = 0;
 		int keeper = 0;
 		ArrayList<Byte> longMaze = new ArrayList<Byte>();
-		
+
 		longMaze.add((byte) compressed[0]);
 		longMaze.add((byte) compressed[1]);
 		longMaze.add((byte) compressed[2]);
@@ -254,8 +277,8 @@ public class Maze3D implements Searchable<Position>, Compressible {
 		longMaze.add((byte) compressed[7]);
 		longMaze.add((byte) compressed[8]);
 		for (int i = 9; i < compressed.length; i++) {
-			if(i%2!=0){
-			keeper = compressed[i];
+			if (i % 2 != 0) {
+				keeper = compressed[i];
 			}
 			if (i % 2 == 0) {
 				serial = compressed[i];
@@ -270,7 +293,7 @@ public class Maze3D implements Searchable<Position>, Compressible {
 		}
 		byte[] theByte = new byte[longMaze.size()];
 		for (int i = 0; i < theByte.length; i++) {
-			theByte[i]=longMaze.get(i);
+			theByte[i] = longMaze.get(i);
 		}
 		return theByte;
 	}
