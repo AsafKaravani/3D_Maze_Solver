@@ -12,8 +12,8 @@ public class myMaze3DGenerator extends Maze3DGeneratorAbstract {
 	//----------Methods---------//
 	//	Inherited methods:
 	@Override
-	public Maze3D generate(String name,int layers, int rows, int column) {
-		myMaze = new Maze3D(name,layers, rows, column);
+	public Maze3D generate(int layers, int rows, int column) {
+		myMaze = new Maze3D(layers, rows, column);
 		createCells();
 		myMaze.setStartPoint(createStartPoint());
 		myMaze.getMaze()[myMaze.getStartPoint().getLayer()][myMaze.getStartPoint().getRow()][myMaze.getStartPoint().getColumn()] = 2;

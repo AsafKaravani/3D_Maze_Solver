@@ -32,22 +32,6 @@ public class Maze3D implements Searchable<Position>, Compressible {
 			}
 		}
 	}
-
-	public Maze3D(String mazeName, int layer, int row, int column) {
-		maze = new int[layer][row][column];
-		this.mazeName = mazeName;
-		for (int layerIndex = 0; layerIndex < layer; layerIndex++) {
-			for (int rowIndex = 0; rowIndex < row; rowIndex++) {
-				for (int columnIndex = 0; columnIndex < column; columnIndex++) {
-					if (layerIndex == 0 || layerIndex == (layer - 1))
-						setCellAsWall(layerIndex, rowIndex, columnIndex);
-					if (rowIndex == 0 || rowIndex == (row - 1) || columnIndex == 0 || columnIndex == (column - 1))
-						setCellAsWall(layerIndex, rowIndex, columnIndex);
-				}
-			}
-		}
-	}
-
 	public Maze3D(byte[] thebyte) {
 		int count = 9;
 		startPoint = new Position((int) thebyte[3], (int) thebyte[4], (int) thebyte[5], this);
@@ -99,14 +83,6 @@ public class Maze3D implements Searchable<Position>, Compressible {
 
 	public void setCellValue(Position pos, int newValue) {
 
-	}
-
-	public String getMazeName() {
-		return mazeName;
-	}
-
-	public void setMazeName(String mazeName) {
-		this.mazeName = mazeName;
 	}
 
 	// Object methods:
@@ -298,5 +274,4 @@ public class Maze3D implements Searchable<Position>, Compressible {
 		return theByte;
 	}
 	// Other Methods:
-
 }
