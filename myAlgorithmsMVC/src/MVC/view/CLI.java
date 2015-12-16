@@ -10,13 +10,12 @@ import java.util.Map;
 
 import MVC.controller.Command;
 
-public class CLI implements Runnable{
+public class CLI implements Runnable {
 	BufferedReader in;
 	PrintWriter out;
 	HashMap<String, Command> commandMap;
 
-
-	public CLI(HashMap<String, Command> commandMap,OutputStreamWriter out, InputStreamReader in){
+	public CLI(HashMap<String, Command> commandMap, OutputStreamWriter out, InputStreamReader in) {
 		commandMap = new HashMap<String, Command>();
 		this.in = new BufferedReader(in);
 		this.out = new PrintWriter(out);
@@ -41,8 +40,19 @@ public class CLI implements Runnable{
 				else {
 					String[] splitedCommand = commandName.split(" ");
 					for(int n = splitedCommand.length - 1; n >= 0; n--){
-						
+						StringBuilder connectedCommand = null;
+						for (int i = 0; i <= n; i++)
+							connectedCommand.append(splitedCommand[i]);					
+						if(commandMap.containsKey(connectedCommand)){
+							String[] args = new String[splitedCommand.length - n - 1];
+							for (int j = 0; j < args.length; j++) {
+								args[j] = splitedCommand[n + 1 + j].substring(1);
+							}
+							commandMap.get(connectedCommand).doCommand(args);
+							break;
+						}
 					}
+					
 				}
 					
 			} catch (IOException e) {
@@ -51,22 +61,12 @@ public class CLI implements Runnable{
 		}
 		
 	}
-	
+
 	private void printAllCommands() {
 		for (Map.Entry<String, Command> entry : commandMap.entrySet()) {
-			if(entry.getValue() != null)
+			if (entry.getValue() != null)
 				entry.getValue().print();
 		}
 	}
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
