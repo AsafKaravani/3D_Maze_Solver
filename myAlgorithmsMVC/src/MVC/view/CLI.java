@@ -16,7 +16,7 @@ public class CLI implements Runnable {
 	HashMap<String, Command> commandMap;
 
 	public CLI(HashMap<String, Command> commandMap, OutputStreamWriter out, InputStreamReader in) {
-		commandMap = new HashMap<String, Command>();
+		this.commandMap = commandMap;
 		this.in = new BufferedReader(in);
 		this.out = new PrintWriter(out);
 	}
@@ -40,15 +40,19 @@ public class CLI implements Runnable {
 				else {
 					String[] splitedCommand = commandName.split(" ");
 					for(int n = splitedCommand.length - 1; n >= 0; n--){
-						StringBuilder connectedCommand = null;
-						for (int i = 0; i <= n; i++)
-							connectedCommand.append(splitedCommand[i]);					
-						if(commandMap.containsKey(connectedCommand)){
+						StringBuilder connectedCommand = new StringBuilder();
+						for (int i = 0; i <= n; i++){
+							if(i != n)
+								connectedCommand.append(splitedCommand[i] + " ");
+							else
+								connectedCommand.append(splitedCommand[i]);
+						}
+						if(commandMap.containsKey(connectedCommand.toString())){
 							String[] args = new String[splitedCommand.length - n - 1];
 							for (int j = 0; j < args.length; j++) {
-								args[j] = splitedCommand[n + 1 + j].substring(1);
+								args[j] = splitedCommand[n + 1 + j];
 							}
-							commandMap.get(connectedCommand).doCommand(args);
+							commandMap.get(connectedCommand.toString()).doCommand(args);
 							break;
 						}
 					}
