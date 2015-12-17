@@ -67,7 +67,7 @@ public class MyController implements Controller {
 					System.out.println("This maze is already exists!");
 				else {
 					model.generateMaze(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),Integer.parseInt(args[3]));
-					System.out.println("The maze has being created");
+					System.out.println("The maze has been created");
 				}
 			}
 		});
