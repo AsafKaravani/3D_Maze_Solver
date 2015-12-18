@@ -11,6 +11,10 @@ public class Position implements Comparable<Position>{
 	//-----------Methods---------//
 	//	Constructors:
 	//		Default constructor
+	/**
+	*@author Yaniv and asaf
+	*@return This is the first constructor to initialize a position.
+	 */
 	public Position(Maze3D insideOf){
 		layer = 0;
 		row = 0;
@@ -20,6 +24,7 @@ public class Position implements Comparable<Position>{
 	}
 	
 	//		Constructor
+	
 	public Position(int layer, int row, int column,Maze3D insideOf){
 		this.layer = layer;
 		this.row = row;
@@ -61,6 +66,10 @@ public class Position implements Comparable<Position>{
 	}
 	
 	//	Moving methods:
+	/**
+	*@author Yaniv and asaf
+	*@return This checks if the algo can move in layers, if he can the position moves X layers.
+	 */
 	public boolean moveInLayers(int jumps){
 		if(layer + jumps >= insideOf.getMaze().length - 1 || layer + jumps <= 0)
 			return false;
@@ -69,7 +78,10 @@ public class Position implements Comparable<Position>{
 			return true;
 		}
 	}
-	
+	/**
+	*@author Yaniv and asaf
+	*@return This checks if the algo can move in rows, if he can the position moves X rows.
+	 */
 	public boolean moveInRows(int jumps){
 		if(row + jumps >= insideOf.getMaze()[0].length - 1 || row + jumps <= 0)
 			return false;
@@ -78,7 +90,10 @@ public class Position implements Comparable<Position>{
 			return true;
 		}
 	}
-	
+	/**
+	*@author Yaniv and asaf
+	*@return This checks if the algo can move in column, if he can the position moves X columns.
+	 */
 	public boolean moveInColumns(int jumps){
 		if(column + jumps >= insideOf.getMaze()[0][0].length - 1 || column + jumps <= 0)
 			return false;
@@ -88,7 +103,10 @@ public class Position implements Comparable<Position>{
 		}
 	}
 	
-	
+	/**
+	*@author Yaniv and asaf
+	*@return Another to string for giving back a string of the maze.
+	 */
 	public String toString(){
 		return "(" + layer + ", " + row + ", " + column + ")";
 	}
@@ -108,7 +126,10 @@ public class Position implements Comparable<Position>{
 		result = prime * result + row;
 		return result;
 	}
-
+	/**
+	*@author Yaniv and asaf
+	*@return The method equals that get an object and check if it is equal or not.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

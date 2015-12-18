@@ -14,7 +14,10 @@ public class CLI implements Runnable {
 	BufferedReader in;
 	PrintWriter out;
 	HashMap<String, Command> commandMap;
-
+	/**
+	*@author Yaniv and Asaf
+	*@return Constructor that take the HashMap and file and save it
+	 */
 	public CLI(HashMap<String, Command> commandMap, OutputStreamWriter out, InputStreamReader in) {
 		this.commandMap = commandMap;
 		this.in = new BufferedReader(in);
@@ -26,6 +29,10 @@ public class CLI implements Runnable {
 		start();
 	}
 
+	/**
+	*@author Yaniv and Asaf
+	*@return Gets from the user a command and from the HashMap go to its command and use its method
+	 */
 	public void start() {
 		String commandName;
 		while(true){
@@ -63,9 +70,11 @@ public class CLI implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		
 	}
-
+	/**
+	*@author Yaniv and asaf
+	*@return Prints all possible commands
+	 */
 	private void printAllCommands() {
 		for (Map.Entry<String, Command> entry : commandMap.entrySet()) {
 			if (entry.getValue() != null)

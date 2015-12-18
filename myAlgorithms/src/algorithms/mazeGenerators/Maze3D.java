@@ -17,6 +17,10 @@ public class Maze3D implements Searchable<Position>, Compressible {
 
 	// ----------Methods---------//
 	// Constructors:
+	/**
+	*@author Yaniv and asaf
+	*@return This is the first constructor to set the maze and set the wall
+	 */
 	public Maze3D(int layer, int row, int column) {
 		maze = new int[layer][row][column];
 
@@ -31,7 +35,10 @@ public class Maze3D implements Searchable<Position>, Compressible {
 			}
 		}
 	}
-
+	/**
+	*@author Yaniv and asaf
+	*@return This is the second constructor to set the maze to a byte array
+	 */
 	public Maze3D(byte[] thebyte) {
 		int count = 9;
 		startPoint = new Position((int)thebyte[3],(int)thebyte[4],(int)thebyte[5] , this);
@@ -86,6 +93,10 @@ public class Maze3D implements Searchable<Position>, Compressible {
 	}
 
 	// Object methods:
+	/**
+	*@author Yaniv and asaf
+	*@return this function takes the maze and change it into a string
+	 */
 	@Override
 	public String toString() {
 		String mazeAsString = "";
@@ -126,6 +137,10 @@ public class Maze3D implements Searchable<Position>, Compressible {
 		return new State<Position>(endPoint);
 	}
 
+	/**
+	*@author Yaniv and asaf
+	*@return This get the all possible states that the maze can go forward
+	 */
 	@Override
 	public ArrayList<State<Position>> getAllPossibleStates(State<Position> s) {
 		ArrayList<State<Position>> possibleStates = new ArrayList<State<Position>>();
@@ -169,7 +184,11 @@ public class Maze3D implements Searchable<Position>, Compressible {
 
 		return possibleStates;
 	}
-
+	
+	/**
+	*@author Yaniv and asaf
+	*@return Takes the maze and put it in a array of bytes.
+	 */
 	public byte[] toByteArray() {
 
 		byte[] theByte = new byte[maze.length * maze[0].length * (maze[0][0].length + 3)];
@@ -187,7 +206,10 @@ public class Maze3D implements Searchable<Position>, Compressible {
 		}
 		return theByte;
 	}
-
+	/**
+	*@author Yaniv and asaf
+	*@return This takes the maze and compress it into along line of bytes like 1,13,0,3,1,4...
+	 */
 	@Override
 	public byte[] compress() {
 		int count = -1;
@@ -236,7 +258,10 @@ public class Maze3D implements Searchable<Position>, Compressible {
 		}
 		return bytes;
 	}
-
+	/**
+	*@author Yaniv and asaf
+	*@return Takes the byte array and decompress it into a huge line of 1 and 0
+	 */
 	@Override
 	public byte[] deCompress(byte[] compressed) {
 		int serial = 0;

@@ -27,10 +27,14 @@ public abstract class CommonSearcher implements Searcher {
 	public int getNumberOfNodesEvalueted() {
 		return evaluetedNodes;
 	}
-	
+	/**
+	*@author Yaniv and Asaf
+	*@return Add it to the openList.
+	 */
 	protected void addToOpenList(State state) {
 		openList.add(state);
 	}
+	
 	
 	protected  void setPriorityQueueComperator(Comparator comp) {
 		openList = new PriorityQueue(comp);

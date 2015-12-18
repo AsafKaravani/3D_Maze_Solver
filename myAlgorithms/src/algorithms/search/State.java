@@ -8,6 +8,10 @@ public class State<T extends Comparable<T>> implements Comparable<State<T>> {
 	
 	//----------Methods---------//
 	//	Constructors:
+	/**
+	*@author Yaniv and Asaf
+	*@return First constructor to give a state its state.
+	 */
 	public State(T state, State<T> parentState) {
 		this.state = state;
 		this.parentState = parentState; 
@@ -52,7 +56,10 @@ public class State<T extends Comparable<T>> implements Comparable<State<T>> {
 		this.parentState = parentState;
 		this.distance = parentState.distance + 1;
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return An overrided method that compares a state to another state.
+	 */
 	@Override
 	public int compareTo(State<T> o) {
 		return this.getState().compareTo(o.getState());
@@ -67,7 +74,10 @@ public class State<T extends Comparable<T>> implements Comparable<State<T>> {
 	}
 
 	
-
+	/**
+	*@author Yaniv and Asaf
+	*@return Check if to objects are equals.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -84,7 +94,10 @@ public class State<T extends Comparable<T>> implements Comparable<State<T>> {
 			return false;
 		return true;
 	}
-
+	/**
+	*@author Yaniv and asaf
+	*@return Takes the state and change it to a string.
+	 */
 	@Override
 	public String toString() {
 		if (parentState == null)

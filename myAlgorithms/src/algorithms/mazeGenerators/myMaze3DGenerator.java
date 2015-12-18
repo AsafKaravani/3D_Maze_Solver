@@ -11,6 +11,7 @@ public class myMaze3DGenerator extends Maze3DGeneratorAbstract {
 	
 	//----------Methods---------//
 	//	Inherited methods:
+
 	@Override
 	public Maze3D generate(int layers, int rows, int column) {
 		myMaze = new Maze3D(layers, rows, column);
@@ -22,11 +23,16 @@ public class myMaze3DGenerator extends Maze3DGeneratorAbstract {
 		
 		do {
 			myMaze.setEndPoint(createStartPoint());
-		} while (myMaze.getEndPoint() == myMaze.getStartPoint());
+		} while (myMaze.getEndPoint().compareTo(myMaze.getEndPoint()) == 0);
 
 		return myMaze;
 	}
+	
 	//	Private helping methods:
+	/**
+	*@author Yaniv and asaf
+	*@return The maze generator move randomly from here you can see were there are possible moves for it.
+	 */
 	private void createCells(){
 		
 		for (int layerIndex = 1; layerIndex < myMaze.getMaze().length - 1; layerIndex++) {
@@ -42,7 +48,10 @@ public class myMaze3DGenerator extends Maze3DGeneratorAbstract {
 		
 		
 	}
-
+	/**
+	*@author Yaniv and asaf
+	*@return The maze generator move randomly from here you can see were there are possible moves for it.
+	 */
 	private boolean randomMovment(Position pos){
 		Random rand = new Random();
 		ArrayList<Integer> possibleMoves = new  ArrayList<Integer>();
@@ -131,7 +140,10 @@ public class myMaze3DGenerator extends Maze3DGeneratorAbstract {
 		
 		return false;	
 	}
-	
+	/**
+	*@author Yaniv and asaf
+	*@return Clean the maze for the better use to 1,0
+	 */
 	private void cleanMaze(){
 		for (int layerIndex = 1; layerIndex < myMaze.getMaze().length - 1; layerIndex = layerIndex + 2) {
 			for (int rowIndex = 1; rowIndex < myMaze.getMaze()[0].length - 1; rowIndex = rowIndex + 2) {
@@ -142,7 +154,10 @@ public class myMaze3DGenerator extends Maze3DGeneratorAbstract {
 		}
 		
 	}
-	
+	/**
+	*@author Yaniv and asaf
+	*@return Create a start point of the maze.
+	 */
 	private Position createStartPoint(){
 		Random rand = new Random();
 		int layer, row, column;
@@ -161,8 +176,11 @@ public class myMaze3DGenerator extends Maze3DGeneratorAbstract {
 			
 		return new Position(layer, row, column, myMaze);
 	}
-	
 	//	The DFS algorithms:
+	/**
+	*@author Yaniv and asaf
+	*@return It's the DFS algo.
+	 */
 	private void depthFirstSearch(Position startPoint){
 		
 		stackOfPositions.add(new Position(startPoint));

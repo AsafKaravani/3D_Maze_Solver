@@ -64,7 +64,7 @@ public class MyModel implements Model {
 					solutionMap.put(name, new BestFirstSearch().search(mazeMap.get(name)));
 					return solutionMap.get(name);
 				}
-				else if (algorithm.equals("Astar")) {
+				else if (algorithm.equals("AStar")) {
 					solutionMap.put(name, new AStar(new MazeAirDistance(), mazeMap.get(name).getGoalState()).search(mazeMap.get(name)));
 					return solutionMap.get(name);
 				}

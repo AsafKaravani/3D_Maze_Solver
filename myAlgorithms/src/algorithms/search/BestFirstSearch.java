@@ -10,6 +10,14 @@ public class BestFirstSearch extends CommonSearcher {
 	//Solution solution from "CommonSearcher"
 
 	//----------Methods---------//
+	/**
+	 * @author Yaniv and Asaf
+	 * @return The BFS is the algorithm that uses two arrays one for the point
+	 *         that hasn't been visited and the second is for points that has been
+	 *         visited and for every point it change its place in the arrays
+	 *         after that it checks the low cost way from initial state to goal
+	 *         state.
+	 */
 	@Override
 	public Solution search(Searchable s) {
 
@@ -63,7 +71,10 @@ public class BestFirstSearch extends CommonSearcher {
 		
 		return solution;
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return Part of the BFS it gets the initial state and give an new array the low cost way and return it .
+	 */
 	private Solution backTrace(State goalState, State initialState) {
 		//Back tracing through the parantStates statring with the goalState until getting to the initialState.
 		Solution solution = new Solution();

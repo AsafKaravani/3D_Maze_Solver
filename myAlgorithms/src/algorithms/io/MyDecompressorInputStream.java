@@ -12,12 +12,20 @@ public class MyDecompressorInputStream<T extends Compressible> extends InputStre
 	public MyDecompressorInputStream(InputStream in){
 		this.in=in;
 	}
+	/**
+	*@author Yaniv and asaf
+	*@return Read from the stream.
+	 */
 	@Override
 	public int read() throws IOException {		
 		return in.read(buffer);
 		
 	}
 	
+	/**
+	*@author Yaniv and asaf
+	*@return Using the decompress method of a compressible object and gets it from the stream.
+	 */
 	public byte[] readObject(T obj) throws IOException{
 		ArrayList<Byte> bytesFromStream = new ArrayList<Byte>(); 
 		read();
