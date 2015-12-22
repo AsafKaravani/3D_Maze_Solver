@@ -24,9 +24,8 @@ public class ConsoleView implements View {
 	}
 
 	@Override
-	public void display() {
-		System.out.println("Welcome to the Maze3D game, please enter a command: ");
-		start();
+	public void display(String message) {
+		System.out.println(message);
 		
 	}
 

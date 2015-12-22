@@ -49,6 +49,7 @@ public class run {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		try {
 			MyDecompressorInputStream<Maze3D> myDecomp = new MyDecompressorInputStream<Maze3D>(new FileInputStream("C:\\Users\\Asaf\\git\\my-algorithms\\myAlgorithms\\assets\\mazeSream"));
 			Maze3D readMaze = new Maze3D(myDecomp.readObject(maze));

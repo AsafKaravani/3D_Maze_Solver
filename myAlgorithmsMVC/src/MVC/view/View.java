@@ -1,5 +1,9 @@
 package MVC.view;
 
 public interface View {
-	void display();
+	/**
+	*@author Yaniv and asaf
+	*@return Display for the user.
+	 */
+	void display(String message);
 }

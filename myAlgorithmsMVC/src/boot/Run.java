@@ -15,7 +15,7 @@ public class Run {
 		ctrl.setModel(model);
 		ctrl.setView(view);
 		
-		view.display();
+		view.start();
 	}
 	
 
