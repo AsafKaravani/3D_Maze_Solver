@@ -1,4 +1,4 @@
-package MVC.view;
+package mvp.view;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import MVC.controller.Command;
+import mvp.presenter.Command;
 
 public class CLI implements Runnable {
 	BufferedReader in;
@@ -24,7 +24,13 @@ public class CLI implements Runnable {
 		this.out = new PrintWriter(out);
 	}
 
-
+	public CLI(OutputStreamWriter out, InputStreamReader in) {
+		this.commandMap = new HashMap<String, Command>();
+		this.in = new BufferedReader(in);
+		this.out = new PrintWriter(out);
+	}
+	
+	
 	@Override
 	public void run() {
 		start();
@@ -91,6 +97,9 @@ public class CLI implements Runnable {
 				entry.getValue().print();
 		}
 	}
-
+	
+	public void insertCommand(String name, Command c){
+		commandMap.put(name, c);
+	}
 
 }

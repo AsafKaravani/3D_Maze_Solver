@@ -20,6 +20,7 @@ public class ConsoleView implements View {
 	}
 	
 	public void start(){
+		System.out.println("---------------Welcome to the 3D maze game---------------");
 		cli.start();
 	}
 

@@ -1,50 +1,41 @@
-package MVC.controller;
+package mvp.presenter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import MVC.model.Model;
-import MVC.view.View;
-import algorithms.mazeGenerators.Maze3D;
-import algorithms.mazeGenerators.Position;
+import mvp.presenter.Command;
 import algorithms.search.Solution;
 import algorithms.search.State;
+import mvp.model.Model;
+import mvp.view.View;
 
-public class MyController implements Controller {
-
+public class Presenter implements Observer {
 	View view;
 	Model model;
-
-	public MyController() {
-
-	}
-
-	public void start() {
-
-	}
-
-	public View getView() {
-		return view;
-	}
-
-	public void setView(View view) {
+	ExecutorService executor;
+	
+	/**
+	 * Constructor that gets a Model and a View.
+	 * 
+	 * @author Asaf and Yaniv(A.K.A. looser)
+	 */
+	public Presenter(View view, Model model){
 		this.view = view;
-	}
-
-	public Model getModel() {
-		return model;
-	}
-
-	public void setModel(Model model) {
 		this.model = model;
+		executor = Executors.newCachedThreadPool();
+	
 	}
 
 	@Override
-	public void display(String message) {
-		view.display(message);
-
+	public void update(Observable o, Object arg) {
+		
+		
 	}
-
+	
 	public HashMap<String, Command> initCommands() {
 		HashMap<String, Command> commandMap = new HashMap<String, Command>();
 
@@ -98,11 +89,11 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				if (model.display(args[0]) == null) {
+				if (model.getMaze(args[0]) == null) {
 					System.out.println("There is no maze in that name");
 				} else {
 					System.out.println("The requested is:");
-					System.out.println(model.display(args[0]));
+					System.out.println(model.getMaze(args[0]));
 				}
 			}
 		});
@@ -199,3 +190,9 @@ public class MyController implements Controller {
 	}
 
 }
+
+	
+	
+	
+	
+
