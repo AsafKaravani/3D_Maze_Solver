@@ -32,19 +32,23 @@ public class Presenter implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		
-		
+		if(o == view){
+			if(arg.getClass() == Command.class){
+				Command command = (Command) arg;
+				command.doCommand(command.getArgs());
+			}
+				
+			
+		}
+		else if(o == model){
+			
+		}
 	}
 	
 	public HashMap<String, Command> initCommands() {
 		HashMap<String, Command> commandMap = new HashMap<String, Command>();
 
 		commandMap.put("generate 3d maze", new Command() {
-
-			@Override
-			public void print() {
-				System.out.println("generate 3d maze <name> <layers> <rows> <colums> (genetaring a new 3d maze)");
-			}
 
 			@Override
 			public void doCommand(String[] args) {
@@ -57,12 +61,6 @@ public class Presenter implements Observer {
 			}
 		});
 		commandMap.put("solve", new Command() {
-
-			@Override
-			public void print() {
-				System.out.println("solve <name> <algorithm>");
-
-			}
 
 			@Override
 			public void doCommand(String[] args) {
@@ -82,12 +80,6 @@ public class Presenter implements Observer {
 		commandMap.put("display", new Command() {
 
 			@Override
-			public void print() {
-				System.out.println("display <name> (Displaying the whole maze)");
-
-			}
-
-			@Override
 			public void doCommand(String[] args) {
 				if (model.getMaze(args[0]) == null) {
 					System.out.println("There is no maze in that name");
@@ -98,12 +90,6 @@ public class Presenter implements Observer {
 			}
 		});
 		commandMap.put("display solution", new Command() {
-
-			@Override
-			public void print() {
-				System.out.println("display solution <name> (Displaying maze's solution)");
-
-			}
 
 			@Override
 			public void doCommand(String[] args) {
@@ -125,12 +111,6 @@ public class Presenter implements Observer {
 		commandMap.put("save maze", new Command() {
 
 			@Override
-			public void print() {
-				System.out.println("save maze <name> <file name> (Saving a maze to this program's dir)");
-
-			}
-
-			@Override
 			public void doCommand(String[] args) {
 				model.saveToFile(args[0], args[1]);
 
@@ -139,24 +119,12 @@ public class Presenter implements Observer {
 		commandMap.put("load maze", new Command() {
 
 			@Override
-			public void print() {
-				System.out.println("load maze <name> <file name> (Loading a maze from this program's dir)");
-
-			}
-
-			@Override
 			public void doCommand(String[] args) {
 				model.loadFromFile(args[0], args[1]);
 
 			}
 		});
 		commandMap.put("maze size", new Command() {
-
-			@Override
-			public void print() {
-				System.out.println("maze size <name> (Display the size of the maze in the memory)");
-
-			}
 
 			@Override
 			public void doCommand(String[] args) {
@@ -170,11 +138,6 @@ public class Presenter implements Observer {
 		});
 		commandMap.put("file size", new Command() {
 
-			@Override
-			public void print() {
-				System.out.println("file size <name> (Display the size of the saved file)");
-
-			}
 
 			@Override
 			public void doCommand(String[] args) {
@@ -188,7 +151,7 @@ public class Presenter implements Observer {
 
 		return commandMap;
 	}
-
+	
 }
 
 	

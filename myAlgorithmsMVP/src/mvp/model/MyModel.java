@@ -22,7 +22,7 @@ import algorithms.search.Solution;
 
 import mvp.presenter.Presenter;
 
-public class myModel extends Observable implements Model {
+public class MyModel extends Observable implements Model {
 
 	Presenter p;
 	HashMap<String, Maze3D> mazeMap = new HashMap<>();
@@ -33,7 +33,7 @@ public class myModel extends Observable implements Model {
 		return p;
 	}
 	
-	public void setCtrl(Presenter pres) {
+	public void setPres(Presenter pres) {
 		this.p = pres;
 	}
 	
