@@ -11,9 +11,9 @@ public class Run {
 		ConsoleView view = new ConsoleView();
 		Presenter pres = new Presenter(view, model);	
 		model.addObserver(pres);
-		view.addObserver(pres);
-		view.getCli().setCommandMap(pres.initCommands());	
-		view.getUserCommand();
+		view.addObserver(pres);	
+		pres.getView().run();
+
 		
 
 	}

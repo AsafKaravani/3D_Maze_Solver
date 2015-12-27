@@ -7,6 +7,7 @@ public interface View {
 	public void displayMaze(Maze3D maze);
 	public void displayMessage(String message);
 	public void getUserCommand();
+	public void run();
 	
 
 }

@@ -6,8 +6,11 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import mvp.presenter.Command;
+import algorithms.mazeGenerators.Maze3D;
+import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
 import mvp.model.Model;
@@ -17,34 +20,71 @@ public class Presenter implements Observer {
 	View view;
 	Model model;
 	ExecutorService executor;
-	
+	HashMap<String, Command> commandMap;
+	HashMap<String, Maze3D> mazeMap = new HashMap<>();
+	HashMap<String, Solution<Position>> solutionMap = new HashMap<>();
+
 	/**
 	 * Constructor that gets a Model and a View.
 	 * 
 	 * @author Asaf and Yaniv(A.K.A. looser)
 	 */
-	public Presenter(View view, Model model){
+	public Presenter(View view, Model model) {
+		initCommands();
 		this.view = view;
 		this.model = model;
 		executor = Executors.newCachedThreadPool();
-	
+
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o == view){
-			if(arg.getClass() == Command.class){
-				Command command = (Command) arg;
-				command.doCommand(command.getArgs());
-			}
+		System.out.println("Updating Presenter");
+		if (o == view) {
+			if (arg.getClass() == String.class) {
+				int n;
+				String tmpStr = (String) arg;
+				String[] splitedCommand = tmpStr.split(" ");
+				for(n = splitedCommand.length - 1; n >= 0; n--){
+					StringBuilder connectedCommand = new StringBuilder();
+					for (int i = 0; i <= n; i++){
+						if(i != n)
+							connectedCommand.append(splitedCommand[i] + " ");
+						else
+							connectedCommand.append(splitedCommand[i]);
+					}
+					if(commandMap.containsKey(connectedCommand.toString())){
+						String[] args = new String[splitedCommand.length - n - 1];
+						for (int j = 0; j < args.length; j++) {
+							args[j] = splitedCommand[n + 1 + j];
+						}
+						commandMap.get(connectedCommand.toString()).doCommand(args);
+						break;
+					}
+				}
+				if(n < 0){
+					view.displayMessage("Invalid command, you can use the \"help\" command to see the command list.");
+				}
 				
-			
-		}
-		else if(o == model){
-			
+				
+				
+				
+				
+			} else
+				System.out.println("The object that have been recived was from the type " 
+										+ arg.getClass().getName() + " and not String!");
+
+		} else if (o == model) {
+
 		}
 	}
-	
+
+	/**
+	 * 
+	 * 
+	 * @return
+	 * Initiated HashMap that maps Strings to Commands.
+	 */
 	public HashMap<String, Command> initCommands() {
 		HashMap<String, Command> commandMap = new HashMap<String, Command>();
 
@@ -52,11 +92,22 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				if(model.mazeExists(args[0]))
-					System.out.println("This maze is already exists!");
+				if (model.mazeExists(args[0]))
+					view.displayMessage("This maze is already exists!");
 				else {
-					model.generateMaze(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),Integer.parseInt(args[3]));
-					System.out.println("The maze has been created");
+				
+					executor.execute(new Runnable() {						
+						@Override
+						public void run() {
+							//TODO  Return something immediately (Future) and then update when the maze is ready. 
+							//(mazeMap.put(args[0], Future<Maze3D>)
+							mazeMap.put(args[0], model.generateMaze(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+										Integer.parseInt(args[3])));
+							
+						}
+					});
+				
+					view.displayMessage("The maze \"" + args[0] + "\" has been created.");
 				}
 			}
 		});
@@ -70,9 +121,9 @@ public class Presenter implements Observer {
 					public void run() {
 						Solution sol = model.solveMaze(args[0], args[1]);
 						if (sol == null)
-							System.out.println("The solving proccess could not have been complete.");
+							view.displayMessage("The solving proccess could not have been complete.");
 						else
-							System.out.println("The maze " + args[0] + "'s solution is ready");
+							view.displayMessage("The maze " + args[0] + "'s solution is ready");
 					}
 				}).start();
 			}
@@ -82,10 +133,10 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 				if (model.getMaze(args[0]) == null) {
-					System.out.println("There is no maze in that name");
+					view.displayMessage("There is no maze in that name");
 				} else {
-					System.out.println("The requested is:");
-					System.out.println(model.getMaze(args[0]));
+					view.displayMessage("The requested is:");
+					view.displayMaze(model.getMaze(args[0]));
 				}
 			}
 		});
@@ -94,16 +145,16 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 				if (model.displaySolution(args[0]) == null) {
-					System.out.println("There is no maze in that name.");
+					view.displayMessage("There is no maze in that name.");
 				} else {
 					Solution sol = model.displaySolution(args[0]);
 					Iterator<State> i = sol.getPathToSolution().iterator();
-					while(i.hasNext()){
+					while (i.hasNext()) {
 						State s = i.next();
-						if(s == null)
-							break;	
+						if (s == null)
+							break;
 						else
-							System.out.println(s.getState());
+							view.displayMessage(s.getState().toString());
 					}
 				}
 			}
@@ -130,32 +181,50 @@ public class Presenter implements Observer {
 			public void doCommand(String[] args) {
 				int size = model.sizeInMemory(args[0]);
 				if (size == -1)
-					System.out.println("There is no such maze!");
+					view.displayMessage("There is no such maze!");
 				else
-					System.out.println("The size of the maze in the memory is " + size + " bytes.");
+					view.displayMessage("The size of the maze in the memory is " + size + " bytes.");
 
 			}
 		});
 		commandMap.put("file size", new Command() {
 
-
 			@Override
 			public void doCommand(String[] args) {
 				int size = model.sizeInFile(args[0]);
 				if (size == -1)
-					System.out.println("There is no such file!");
+					view.displayMessage("There is no such file!");
 				else
-					System.out.println("The size of the maze in the file is " + size + " bytes.");
+					view.displayMessage("The size of the maze in the file is " + size + " bytes.");
 			}
 		});
 
+		 this.commandMap = commandMap;
+		 return commandMap;
+	}
+
+	public View getView() {
+		return view;
+	}
+
+	public void setView(View view) {
+		this.view = view;
+	}
+
+	public Model getModel() {
+		return model;
+	}
+
+	public void setModel(Model model) {
+		this.model = model;
+	}
+
+	public HashMap<String, Command> getCommandMap() {
 		return commandMap;
 	}
-	
+
+	public void setCommandMap(HashMap<String, Command> commandMap) {
+		this.commandMap = commandMap;
+	}
+
 }
-
-	
-	
-	
-	
-

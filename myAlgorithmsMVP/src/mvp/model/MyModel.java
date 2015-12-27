@@ -25,8 +25,7 @@ import mvp.presenter.Presenter;
 public class MyModel extends Observable implements Model {
 
 	Presenter p;
-	HashMap<String, Maze3D> mazeMap = new HashMap<>();
-	HashMap<String, Solution<Position>> solutionMap = new HashMap<>();
+
 	
 	
 	public Presenter getPres() {
@@ -39,27 +38,21 @@ public class MyModel extends Observable implements Model {
 	
 	@Override
 	public Maze3D generateMaze(String name,int layers, int rows, int columns){
-		if(layers%2==0){
-			Maze3D gameMaze= new myMaze3DGenerator().generate(layers+1, rows, columns);
-			mazeMap.put(name, gameMaze);
-		 	return gameMaze;
-		}
-		else if(rows%2==0){
-			Maze3D gameMaze= new myMaze3DGenerator().generate(layers, rows+1, columns);
-			mazeMap.put(name, gameMaze);
-		 	return gameMaze;
-		}
-		else if(columns%2==0){
-			Maze3D gameMaze= new myMaze3DGenerator().generate(layers, rows, columns+1);
-			mazeMap.put(name, gameMaze);
-		 	return gameMaze;
-		}
-		else{
+		if(layers%2==0)
+			layers++;
+		
+		if(rows%2==0)
+			rows++;
+		
+		else if(columns%2==0)
+			columns++;
+		
+		
 	 	Maze3D gameMaze= new myMaze3DGenerator().generate(layers, rows, columns);
-	 	mazeMap.put(name, gameMaze);
-	 	return gameMaze;
+	 	return (gameMaze);
+
 	}
-		}
+		
 
 	@Override
 	public Solution solveMaze(String name, String algorithm) {
@@ -162,7 +155,9 @@ public class MyModel extends Observable implements Model {
 
 	@Override
 	public Maze3D getMaze(String name) {
-		// TODO Auto-generated method stub
+		if(mazeExists(name))
+			return mazeMap.get(name);
+		else
 		return null;
 	}
 
