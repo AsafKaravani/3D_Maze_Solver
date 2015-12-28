@@ -21,9 +21,6 @@ public class Presenter implements Observer {
 	Model model;
 	ExecutorService executor;
 	HashMap<String, Command> commandMap;
-	HashMap<String, Maze3D> mazeMap = new HashMap<>();
-	HashMap<String, Solution<Position>> solutionMap = new HashMap<>();
-
 	/**
 	 * Constructor that gets a Model and a View.
 	 * 
@@ -92,8 +89,9 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				if (model.mazeExists(args[0]))
+				if (model.mazeExists(args[0])==true){
 					view.displayMessage("This maze is already exists!");
+				}
 				else {
 				
 					executor.execute(new Runnable() {						
@@ -101,8 +99,7 @@ public class Presenter implements Observer {
 						public void run() {
 							//TODO  Return something immediately (Future) and then update when the maze is ready. 
 							//(mazeMap.put(args[0], Future<Maze3D>)
-							mazeMap.put(args[0], model.generateMaze(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),
-										Integer.parseInt(args[3])));
+							model.generateMaze(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),Integer.parseInt(args[3]));
 							
 						}
 					});

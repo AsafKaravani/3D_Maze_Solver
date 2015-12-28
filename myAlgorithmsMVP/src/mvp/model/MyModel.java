@@ -19,77 +19,61 @@ import algorithms.search.BestFirstSearch;
 import algorithms.search.MazeAirDistance;
 import algorithms.search.Solution;
 
-
 import mvp.presenter.Presenter;
 
 public class MyModel extends Observable implements Model {
-
-	Presenter p;
-
-	
-	
-	public Presenter getPres() {
-		return p;
-	}
-	
-	public void setPres(Presenter pres) {
-		this.p = pres;
-	}
-	
-	@Override
-	public Maze3D generateMaze(String name,int layers, int rows, int columns){
-		if(layers%2==0)
-			layers++;
-		
-		if(rows%2==0)
-			rows++;
-		
-		else if(columns%2==0)
-			columns++;
-		
-		
-	 	Maze3D gameMaze= new myMaze3DGenerator().generate(layers, rows, columns);
-	 	return (gameMaze);
-
-	}
-		
+	HashMap<String, Solution<Position>> solutionMap = new HashMap<>();
+	HashMap<String, Maze3D> mazeMap = new HashMap<>();
 
 	@Override
-	public Solution solveMaze(String name, String algorithm) {
-		
-			if (mazeMap.containsKey(name)) {
-				if (algorithm.equals("BFS")) {
-					solutionMap.put(name, new BestFirstSearch().search(mazeMap.get(name)));
-					return solutionMap.get(name);
-				}
-				else if (algorithm.equals("AStar")) {
-					solutionMap.put(name, new AStar(new MazeAirDistance(), mazeMap.get(name).getGoalState()).search(mazeMap.get(name)));
-					return solutionMap.get(name);
-				}
-			
-				else{
-					return null;
-				}			
+	public void generateMaze(String name, int layers, int rows, int columns) {
+		if (mazeMap.containsKey(name)) {
+			notifyObservers(null);
+		} else {
+			if (layers % 2 == 0) {
+				layers++;
 			}
-			else{
-				return null;
+			if (rows % 2 == 0) {
+				rows++;
 			}
-	
+
+			else if (columns % 2 == 0) {
+				columns++;
+			}
+			Maze3D gameMaze = new myMaze3DGenerator().generate(layers, rows, columns);
+			notifyObservers(gameMaze);
+		}
 	}
-	
+
 	@Override
-	public boolean mazeExists(String name){
-		if(mazeMap.containsKey(name))
+	public void solveMaze(String name, String algorithm) {
+
+		if (solutionMap.containsKey(name)) {
+			if (algorithm.equals("BFS")) {
+				notifyObservers(solutionMap.put(name, new BestFirstSearch().search(mazeMap.get(name))));
+			} else if (algorithm.equals("AStar")) {
+				notifyObservers(solutionMap.put(name,
+						new AStar(new MazeAirDistance(), mazeMap.get(name).getGoalState()).search(mazeMap.get(name))));
+			}
+		} else {
+			notifyObservers(null);
+		}
+	}
+
+	@Override
+	public Boolean mazeExists(String name) {
+		if (mazeMap.containsKey(name)) {
 			return true;
-		return false;
+		}
+	return false;
 	}
-	
+
 	@Override
-	public Solution displaySolution(String name){
+	public void displaySolution(String name) {
 		if (solutionMap.containsKey(name))
-			return solutionMap.get(name);
+			notifyObservers(solutionMap.get(name));
 		else
-			return null;			
+			notifyObservers(null);
 	}
 
 	@Override
@@ -97,7 +81,10 @@ public class MyModel extends Observable implements Model {
 		try {
 			MyCompressorOutputStream<Maze3D> out = new MyCompressorOutputStream<>(
 					new FileOutputStream(new File(fileName)));
-			//MyCompressorOutputStream<Maze3D> out = new MyCompressorOutputStream<>(new FileOutputStream(new File(MyModel.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath() + "\\" + fileName)));
+			// MyCompressorOutputStream<Maze3D> out = new
+			// MyCompressorOutputStream<>(new FileOutputStream(new
+			// File(MyModel.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()
+			// + "\\" + fileName)));
 			out.writeObject(mazeMap.get(name));
 			out.close();
 		} catch (FileNotFoundException e) {
@@ -106,15 +93,17 @@ public class MyModel extends Observable implements Model {
 			e.printStackTrace();
 		}
 
-		
 	}
-	
+
 	@Override
 	public void loadFromFile(String name, String fileName) {
 		try {
 			MyDecompressorInputStream<Maze3D> in = new MyDecompressorInputStream<>(
 					new FileInputStream(new File(fileName)));
-			//MyDecompressorInputStream<Maze3D> in = new MyDecompressorInputStream<>(new FileInputStream(new File(MyModel.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath() + "\\" + fileName)));
+			// MyDecompressorInputStream<Maze3D> in = new
+			// MyDecompressorInputStream<>(new FileInputStream(new
+			// File(MyModel.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()
+			// + "\\" + fileName)));
 			Maze3D maze = new Maze3D(in.readObject(new Maze3D(3, 3, 3)));
 			mazeMap.put(name, maze);
 			in.close();
@@ -123,28 +112,28 @@ public class MyModel extends Observable implements Model {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	@Override
-	public int sizeInMemory(String name) {
-		if(mazeMap.containsKey(name))
-			return ((mazeMap.get(name).getMaze().length * mazeMap.get(name).getMaze()[0].length * mazeMap.get(name).getMaze()[0][0].length) + 6) * 4;
+	public void sizeInMemory(String name) {
+		if (mazeMap.containsKey(name))
+			notifyObservers(((mazeMap.get(name).getMaze().length * mazeMap.get(name).getMaze()[0].length
+					* mazeMap.get(name).getMaze()[0][0].length) + 6) * 4);
 		else
-			return -1;
+			notifyObservers(-1);
 	}
-	
+
 	@Override
-	public int sizeInFile(String filename) {
+	public void sizeInFile(String filename) {
 		File f;
-			f = new File(filename);
-		return (int) f.length();
+		f = new File(filename);
+		notifyObservers((int) f.length());
 	}
-	
+
 	@Override
-	public String getDir(String path) {
+	public void getDir(String path) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -155,14 +144,9 @@ public class MyModel extends Observable implements Model {
 
 	@Override
 	public Maze3D getMaze(String name) {
-		if(mazeExists(name))
+		if (mazeMap.containsKey(name))
 			return mazeMap.get(name);
 		else
-		return null;
+			return null;
 	}
-
-
-	
-	
-
 }

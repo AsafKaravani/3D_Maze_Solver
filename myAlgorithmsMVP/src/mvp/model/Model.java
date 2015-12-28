@@ -9,13 +9,13 @@ public interface Model {
 	*@author Yaniv and Asaf
 	*@return Generate the maze from the parameters.
 	 */
-	public Maze3D generateMaze(String name,int layers, int rows, int columns);
+	public void generateMaze(String name,int layers, int rows, int columns);
 	
 	/**
 	*@author Yaniv and Asaf
 	*@return Gets the solution of a maze.
 	 */
-	public Solution solveMaze(String name,String method);
+	public void solveMaze(String name,String method);
 	
 	/**
 	*@author Yaniv and Asaf
@@ -27,7 +27,7 @@ public interface Model {
 	*@author Yaniv and Asaf
 	*@return A solution that contains the steps to solve the maze.
 	 */
-	public Solution displaySolution(String name);
+	public void displaySolution(String name);
 	
 	/**
 	*@author Yaniv and Asaf
@@ -51,17 +51,17 @@ public interface Model {
 	*@author Yaniv and Asaf
 	*@return The size of the maze in the memory.
 	 */
-	public int sizeInMemory(String name);
+	public void sizeInMemory(String name);
 	/**
 	*@author Yaniv and Asaf
 	*@return Give back the size of the maze in a file.
 	 */
-	public int sizeInFile(String name);
+	public void sizeInFile(String name);
 	/**
 	*@author Yaniv and Asaf
 	*@return The files and folders in a certain path.
 	 */
-	public String getDir(String path);
+	public void getDir(String path);
 	/**
 	*@author Yaniv and Asaf
 	*@return A slice of the 3D maze.
