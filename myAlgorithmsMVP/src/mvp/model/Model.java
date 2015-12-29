@@ -1,7 +1,10 @@
 package mvp.model;
 
 
+import java.util.HashMap;
+
 import algorithms.mazeGenerators.Maze3D;
+import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
 public interface Model {
@@ -27,7 +30,7 @@ public interface Model {
 	*@author Yaniv and Asaf
 	*@return A solution that contains the steps to solve the maze.
 	 */
-	public void displaySolution(String name);
+	public Solution<Position> getSolution(String name);
 	
 	/**
 	*@author Yaniv and Asaf
@@ -51,22 +54,29 @@ public interface Model {
 	*@author Yaniv and Asaf
 	*@return The size of the maze in the memory.
 	 */
-	public void sizeInMemory(String name);
+	public int sizeInMemory(String name);
+	
 	/**
 	*@author Yaniv and Asaf
 	*@return Give back the size of the maze in a file.
 	 */
-	public void sizeInFile(String name);
+	public int sizeInFile(String name);
+	
 	/**
 	*@author Yaniv and Asaf
 	*@return The files and folders in a certain path.
 	 */
 	public void getDir(String path);
+	
 	/**
 	*@author Yaniv and Asaf
 	*@return A slice of the 3D maze.
 	 */
-	public int[][] displayCrossSection(int index, String name);
+	public int[][] getCrossSection(int index, String name);
 	
-
+	
+	public HashMap<String, Solution<Position>> getSolutionMap();
+	
+	public HashMap<String, Maze3D> getMazeMap();
+	
 }

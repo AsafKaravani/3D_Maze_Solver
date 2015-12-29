@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.concurrent.Future;
 
 import algorithms.io.MyCompressorOutputStream;
 import algorithms.io.MyDecompressorInputStream;
@@ -18,7 +19,8 @@ import algorithms.search.AStar;
 import algorithms.search.BestFirstSearch;
 import algorithms.search.MazeAirDistance;
 import algorithms.search.Solution;
-
+import mvp.model.notifers.MazeCreationNotifier;
+import mvp.model.notifers.MazeSolutionNotifier;
 import mvp.presenter.Presenter;
 
 public class MyModel extends Observable implements Model {
@@ -28,52 +30,80 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public void generateMaze(String name, int layers, int rows, int columns) {
 		if (mazeMap.containsKey(name)) {
-			notifyObservers(null);
+			setChanged();
+			notifyObservers(new MazeCreationNotifier(name, false));
 		} else {
-			if (layers % 2 == 0) {
+			if (layers % 2 == 0)
 				layers++;
-			}
-			if (rows % 2 == 0) {
-				rows++;
-			}
 
-			else if (columns % 2 == 0) {
+			if (rows % 2 == 0)
+				rows++;
+
+			else if (columns % 2 == 0)
 				columns++;
-			}
+
+			//NEEDS TO ADD FUTURE!
+
 			Maze3D gameMaze = new myMaze3DGenerator().generate(layers, rows, columns);
-			notifyObservers(gameMaze);
+			mazeMap.remove(name);
+			mazeMap.put(name, gameMaze);
+			setChanged();
+			notifyObservers(new MazeCreationNotifier(name, true));
 		}
 	}
 
+	public HashMap<String, Solution<Position>> getSolutionMap() {
+		return solutionMap;
+	}
+
+	public void setSolutionMap(HashMap<String, Solution<Position>> solutionMap) {
+		this.solutionMap = solutionMap;
+	}
+
+	public HashMap<String, Maze3D> getMazeMap() {
+		return mazeMap;
+	}
+
+	public void setMazeMap(HashMap<String, Maze3D> mazeMap) {
+		this.mazeMap = mazeMap;
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void solveMaze(String name, String algorithm) {
-
-		if (solutionMap.containsKey(name)) {
-			if (algorithm.equals("BFS")) {
-				notifyObservers(solutionMap.put(name, new BestFirstSearch().search(mazeMap.get(name))));
-			} else if (algorithm.equals("AStar")) {
-				notifyObservers(solutionMap.put(name,
-						new AStar(new MazeAirDistance(), mazeMap.get(name).getGoalState()).search(mazeMap.get(name))));
+		setChanged();
+		if (mazeMap.containsKey(name)) {
+			if (!solutionMap.containsKey(name)) {
+				if (algorithm.equals("BFS")) {
+					solutionMap.put(name, new BestFirstSearch().search(mazeMap.get(name)));
+				} else if (algorithm.equals("AStar")) {					
+							solutionMap.put(name, new AStar(new MazeAirDistance(), mazeMap.get(name).getGoalState())
+									.search(mazeMap.get(name)));
+				}
+				notifyObservers(new MazeSolutionNotifier(name, true));
+			} else {
+				notifyObservers(new MazeSolutionNotifier(name, false));
 			}
 		} else {
-			notifyObservers(null);
+			notifyObservers(new MazeSolutionNotifier(name, false));
 		}
+
 	}
 
 	@Override
-	public Boolean mazeExists(String name) {
+	public boolean mazeExists(String name) {
 		if (mazeMap.containsKey(name)) {
 			return true;
 		}
-	return false;
+		return false;
 	}
 
 	@Override
-	public void displaySolution(String name) {
+	public Solution<Position> getSolution(String name) {
 		if (solutionMap.containsKey(name))
-			notifyObservers(solutionMap.get(name));
+			return solutionMap.get(name);
 		else
-			notifyObservers(null);
+			return null;
 	}
 
 	@Override
@@ -116,19 +146,19 @@ public class MyModel extends Observable implements Model {
 	}
 
 	@Override
-	public void sizeInMemory(String name) {
+	public int sizeInMemory(String name) {
 		if (mazeMap.containsKey(name))
-			notifyObservers(((mazeMap.get(name).getMaze().length * mazeMap.get(name).getMaze()[0].length
+			return (((mazeMap.get(name).getMaze().length * mazeMap.get(name).getMaze()[0].length
 					* mazeMap.get(name).getMaze()[0][0].length) + 6) * 4);
 		else
-			notifyObservers(-1);
+			return -1;
 	}
 
 	@Override
-	public void sizeInFile(String filename) {
+	public int sizeInFile(String filename) {
 		File f;
 		f = new File(filename);
-		notifyObservers((int) f.length());
+		return (int) f.length();
 	}
 
 	@Override
@@ -137,7 +167,7 @@ public class MyModel extends Observable implements Model {
 	}
 
 	@Override
-	public int[][] displayCrossSection(int index, String name) {
+	public int[][] getCrossSection(int index, String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

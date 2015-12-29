@@ -3,17 +3,15 @@ package mvp.presenter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Observable;
-import java.util.Observer;
+import java.util.Observer;import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import mvp.presenter.Command;
-import algorithms.mazeGenerators.Maze3D;
-import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
 import mvp.model.Model;
+import mvp.model.notifers.MazeCreationNotifier;
+import mvp.model.notifers.MazeSolutionNotifier;
 import mvp.view.View;
 
 public class Presenter implements Observer {
@@ -30,7 +28,7 @@ public class Presenter implements Observer {
 		initCommands();
 		this.view = view;
 		this.model = model;
-		executor = Executors.newCachedThreadPool();
+		executor = Executors.newFixedThreadPool(3);
 
 	}
 
@@ -68,11 +66,25 @@ public class Presenter implements Observer {
 				
 				
 			} else
-				System.out.println("The object that have been recived was from the type " 
+				view.displayMessage("The object that have been recived was from the type " 
 										+ arg.getClass().getName() + " and not String!");
 
 		} else if (o == model) {
-
+			if (arg instanceof MazeCreationNotifier) {
+				if(((MazeCreationNotifier) arg).isSucceed()){
+					view.displayMessage("The maze \"" + ((MazeCreationNotifier) arg).getMazeName() + "\" was create." );
+				}
+				else
+					view.displayMessage("The maze \"" + ((MazeCreationNotifier) arg).getMazeName() + "\" is already exists! Please choose another name." );
+			}
+			
+			else if (arg instanceof MazeSolutionNotifier){
+				if(((MazeSolutionNotifier) arg).isSucceed()) {
+					view.displayMessage("The solution for the maze \"" + ((MazeSolutionNotifier) arg).getMazeName() + "\" is ready.");					
+				} else {
+					view.displayMessage("The solution for the maze \"" + ((MazeSolutionNotifier) arg).getMazeName() + "\" coudn't be created!");
+				}
+			}			
 		}
 	}
 
@@ -93,8 +105,8 @@ public class Presenter implements Observer {
 					view.displayMessage("This maze is already exists!");
 				}
 				else {
-				
-					executor.execute(new Runnable() {						
+					
+					executor.submit(new Runnable() {						
 						@Override
 						public void run() {
 							//TODO  Return something immediately (Future) and then update when the maze is ready. 
@@ -104,7 +116,7 @@ public class Presenter implements Observer {
 						}
 					});
 				
-					view.displayMessage("The maze \"" + args[0] + "\" has been created.");
+					
 				}
 			}
 		});
@@ -112,17 +124,13 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				new Thread(new Runnable() {
-
+				executor.submit(new Runnable() {
+					
 					@Override
-					public void run() {
-						Solution sol = model.solveMaze(args[0], args[1]);
-						if (sol == null)
-							view.displayMessage("The solving proccess could not have been complete.");
-						else
-							view.displayMessage("The maze " + args[0] + "'s solution is ready");
+					public void run() {					
+						model.solveMaze(args[0], args[1]);		
 					}
-				}).start();
+				});
 			}
 		});
 		commandMap.put("display", new Command() {
@@ -130,7 +138,7 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 				if (model.getMaze(args[0]) == null) {
-					view.displayMessage("There is no maze in that name");
+					view.displayMessage("There is no maze in that name.");
 				} else {
 					view.displayMessage("The requested is:");
 					view.displayMaze(model.getMaze(args[0]));
@@ -141,10 +149,10 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				if (model.displaySolution(args[0]) == null) {
+				if (model.getSolution(args[0]) == null) {
 					view.displayMessage("There is no maze in that name.");
 				} else {
-					Solution sol = model.displaySolution(args[0]);
+					Solution sol = model.getSolution(args[0]);
 					Iterator<State> i = sol.getPathToSolution().iterator();
 					while (i.hasNext()) {
 						State s = i.next();
