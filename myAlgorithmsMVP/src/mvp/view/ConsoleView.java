@@ -16,6 +16,7 @@ public class ConsoleView extends Observable implements View, Runnable {
 	
 	public ConsoleView(String title,int width,int height) {
 	screen=new ControlScreen(title, width, height);
+	screen.run();
 	screen.setStartLisener(new SelectionListener() {
 		
 		@Override
@@ -83,7 +84,6 @@ public class ConsoleView extends Observable implements View, Runnable {
 		System.out.println(message);
 	}
 
-	@Override
 	public void run() {
 		while (true)
 			getUserCommand();

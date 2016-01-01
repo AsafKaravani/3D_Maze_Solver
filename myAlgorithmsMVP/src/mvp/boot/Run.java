@@ -15,7 +15,6 @@ public class Run {
 		Presenter pres = new Presenter(view, model);	
 		model.addObserver(pres);
 		view.addObserver(pres);
-		view.run();
 	}
 
 }
