@@ -105,14 +105,12 @@ public class Presenter implements Observer {
 					view.displayMessage("This maze is already exists!");
 				}
 				else {
-					
 					executor.submit(new Runnable() {						
 						@Override
 						public void run() {
 							//TODO  Return something immediately (Future) and then update when the maze is ready. 
 							//(mazeMap.put(args[0], Future<Maze3D>)
-							model.generateMaze(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),Integer.parseInt(args[3]));
-							
+							model.generateMaze(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),Integer.parseInt(args[3]));	
 						}
 					});
 				

@@ -11,12 +11,10 @@ public class Run {
 
 	public static void main(String[] args) {
 		MyModel model = new MyModel();
-		ControlScreen view = new ControlScreen("yaniv",800,400);
+		ControlScreen view = new ControlScreen("The 3D maze game",800,400);
 		Presenter pres = new Presenter(view, model);	
 		model.addObserver(pres);
 		view.addObserver(pres);
-		
 		view.run();
 	}
-
 }
