@@ -124,9 +124,6 @@ public class TextScreen implements Runnable {
 			}
 
 		} // shell is disposed
-
-		display.dispose(); // dispose OS components
-
 	}
 
 	public String returnMessage(String messege) {

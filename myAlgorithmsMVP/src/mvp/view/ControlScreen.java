@@ -11,9 +11,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -31,7 +33,7 @@ public class ControlScreen extends BasicWindow implements View{
 	@Override
 	void initWidgets() {
 		shell.setSize(500, 400);
-		shell.setLayout(new GridLayout());
+		shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,400,400));
 		//creat the bar
 		Menu menuBar=new Menu(shell,SWT.BAR);
 		//creat the file items
@@ -52,7 +54,6 @@ public class ControlScreen extends BasicWindow implements View{
 					
 					setChanged();
 					notifyObservers("generate 3d maze"+" "+t.getTextCommand());
-
 					break;
 				}
 			}
@@ -66,7 +67,9 @@ public class ControlScreen extends BasicWindow implements View{
 				switch (args.type) {
 				case SWT.Selection:
 					setChanged();
-					notifyObservers("display ");
+					SingleTextScreen s=new SingleTextScreen(display, "Display maze", 400, 400);
+					s.run();
+					notifyObservers("display"+" "+s.getTextCommand());
 					break;
 
 				}
@@ -82,7 +85,9 @@ public class ControlScreen extends BasicWindow implements View{
 				switch (args.type) {
 				case SWT.Selection:
 					setChanged();
-					notifyObservers("solve yaniv BFS");
+					MaxTextScreen f=new MaxTextScreen(display, "give solution method", 400, 400);
+							f.run();
+					notifyObservers("solve"+" ");
 					break;
 				}
 
@@ -96,8 +101,10 @@ public class ControlScreen extends BasicWindow implements View{
 			public void handleEvent(Event args) {
 				switch (args.type) {
 				case SWT.Selection:
+					SingleTextScreen s=new SingleTextScreen(display, "Display maze", 400, 400);
+					s.run();
 					setChanged();
-					notifyObservers("display solution yaniv");
+					notifyObservers("display solution"+s.getTextCommand());
 					break;
 
 				}
@@ -109,17 +116,15 @@ public class ControlScreen extends BasicWindow implements View{
 
 	@Override
 	public void displayMaze(Maze3D maze) {
-		Text messageText = new Text(shell, SWT.BORDER | SWT.FILL);
-		messageText.setBounds(10,10,400,400);
-		messageText.setText(maze.toString());
-
+		Text text = new Text(shell, SWT.BORDER | SWT.V_SCROLL);
+	    text.setBounds(10, 10, 400, 100);
+	    text.append(maze.toString());
 	}
 
 	@Override
 	public void displayMessage(String message) {
-		Text messageText = new Text(shell, SWT.BORDER | SWT.FILL);
-		messageText.setBounds(10,10,400,400);
-		messageText.setText(message);
+	ConsoleDisplayMassage textMessage=new ConsoleDisplayMassage(display, "message", message);
+	textMessage.run();
 	}
 
 	@Override
