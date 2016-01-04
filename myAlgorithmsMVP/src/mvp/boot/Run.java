@@ -1,10 +1,13 @@
 package mvp.boot;
 
+import org.eclipse.swt.widgets.Display;
+
 import mvp.model.MyModel;
 import mvp.presenter.Presenter;
 import mvp.view.BasicWindow;
 import mvp.view.ConsoleView;
 import mvp.view.ControlScreen;
+import mvp.view.TextScreen;
 import mvp.view.View;
 
 public class Run {
@@ -16,5 +19,7 @@ public class Run {
 		model.addObserver(pres);
 		view.addObserver(pres);
 		view.run();
+	
+		
 	}
 }

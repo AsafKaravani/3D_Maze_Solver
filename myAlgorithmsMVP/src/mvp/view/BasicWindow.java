@@ -6,10 +6,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 
-public abstract class BasicWindow extends Observable implements Runnable, View{
+public abstract class BasicWindow extends Observable implements Runnable{
  
- Display display;
- Shell shell;
+ protected Display display;
+ protected Shell shell;
  
   public BasicWindow(String title, int width,int height) {
    display=new Display();
@@ -37,6 +37,22 @@ public abstract class BasicWindow extends Observable implements Runnable, View{
 
    display.dispose(); // dispose OS components
  }
+
+public Display getDisplay() {
+	return display;
+}
+
+public void setDisplay(Display display) {
+	this.display = display;
+}
+
+public Shell getShell() {
+	return shell;
+}
+
+public void setShell(Shell shell) {
+	this.shell = shell;
+}
  
 
 }

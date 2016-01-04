@@ -1,5 +1,7 @@
 package mvp.view;
 
+import java.io.Console;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -15,10 +17,12 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+
 import algorithms.mazeGenerators.Maze3D;
 import mvp.model.notifers.MazeCreationNotifier;
 
-public class ControlScreen extends BasicWindow {
+public class ControlScreen extends BasicWindow implements View{
 
 	public ControlScreen(String title, int width, int height) {
 		super(title, width, height);
@@ -43,8 +47,11 @@ public class ControlScreen extends BasicWindow {
 			public void handleEvent(Event e) {
 				switch (e.type) {
 				case SWT.Selection:
+			TextScreen t=new TextScreen(display, "new maze 3D game", 400, 400);
+			t.run();
+					
 					setChanged();
-					notifyObservers("generate 3d maze yaniv 5 5 5");
+					notifyObservers("generate 3d maze"+" "+t.getTextCommand());
 
 					break;
 				}
@@ -59,7 +66,7 @@ public class ControlScreen extends BasicWindow {
 				switch (args.type) {
 				case SWT.Selection:
 					setChanged();
-					notifyObservers("display yaniv");
+					notifyObservers("display ");
 					break;
 
 				}
@@ -102,14 +109,17 @@ public class ControlScreen extends BasicWindow {
 
 	@Override
 	public void displayMaze(Maze3D maze) {
-		System.out.println(maze);
+		Text messageText = new Text(shell, SWT.BORDER | SWT.FILL);
+		messageText.setBounds(10,10,400,400);
+		messageText.setText(maze.toString());
 
 	}
 
 	@Override
 	public void displayMessage(String message) {
-		System.out.println(message);
-
+		Text messageText = new Text(shell, SWT.BORDER | SWT.FILL);
+		messageText.setBounds(10,10,400,400);
+		messageText.setText(message);
 	}
 
 	@Override
@@ -117,5 +127,4 @@ public class ControlScreen extends BasicWindow {
 		// TODO Auto-generated method stub
 
 	}
-
 }
