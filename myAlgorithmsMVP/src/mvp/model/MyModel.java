@@ -28,10 +28,12 @@ public class MyModel extends Observable implements Model {
 	HashMap<String, Maze3D> mazeMap = new HashMap<>();
 
 	@Override
-	public void generateMaze(String name, int layers, int rows, int columns) {
+	public Maze3D generateMaze(String name, int layers, int rows, int columns) {
+		
 		if (mazeMap.containsKey(name)) {
 			setChanged();
 			notifyObservers(new MazeCreationNotifier(name, false));
+			return null;
 		} else {
 			if (layers % 2 == 0)
 				layers++;
@@ -42,13 +44,14 @@ public class MyModel extends Observable implements Model {
 			else if (columns % 2 == 0)
 				columns++;
 
-			//NEEDS TO ADD FUTURE!
-
+			
 			Maze3D gameMaze = new myMaze3DGenerator().generate(layers, rows, columns);
 			mazeMap.remove(name);
 			mazeMap.put(name, gameMaze);
 			setChanged();
 			notifyObservers(new MazeCreationNotifier(name, true));
+			return gameMaze;
+			
 		}
 	}
 
@@ -70,22 +73,27 @@ public class MyModel extends Observable implements Model {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void solveMaze(String name, String algorithm) {
+	public Solution<Position> solveMaze(String name, String algorithm) {
 		setChanged();
 		if (mazeMap.containsKey(name)) {
 			if (!solutionMap.containsKey(name)) {
 				if (algorithm.equals("BFS")) {
-					solutionMap.put(name, new BestFirstSearch().search(mazeMap.get(name)));
-				} else if (algorithm.equals("AStar")) {					
-							solutionMap.put(name, new AStar(new MazeAirDistance(), mazeMap.get(name).getGoalState())
-									.search(mazeMap.get(name)));
+					return new BestFirstSearch().search(mazeMap.get(name));
+					
+				} else if (algorithm.equals("AStar")) {		
+					return new AStar(new MazeAirDistance(), mazeMap.get(name).getGoalState())
+							.search(mazeMap.get(name));
+
 				}
 				notifyObservers(new MazeSolutionNotifier(name, true));
+				return null;
 			} else {
 				notifyObservers(new MazeSolutionNotifier(name, false));
+				return null;
 			}
 		} else {
 			notifyObservers(new MazeSolutionNotifier(name, false));
+			return null;
 		}
 
 	}

@@ -3,10 +3,15 @@ package mvp.presenter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Observable;
-import java.util.Observer;import java.util.concurrent.Callable;
+import java.util.Observer;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import algorithms.mazeGenerators.Maze3D;
+import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
 import mvp.model.Model;
@@ -90,7 +95,6 @@ public class Presenter implements Observer {
 
 	/**
 	 * 
-	 * 
 	 * @return
 	 * Initiated HashMap that maps Strings to Commands.
 	 */
@@ -106,17 +110,23 @@ public class Presenter implements Observer {
 				}
 				else {
 					
-					executor.submit(new Runnable() {						
+					Future<Maze3D> futureMaze = executor.submit(new Callable<Maze3D>() {
+
 						@Override
-						public void run() {
-							//TODO  Return something immediately (Future) and then update when the maze is ready. 
-							//(mazeMap.put(args[0], Future<Maze3D>)
-							model.generateMaze(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),Integer.parseInt(args[3]));
-							
+						public Maze3D call() throws Exception {						
+							return 	model.generateMaze(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]),Integer.parseInt(args[3]));
 						}
 					});
-				
 					
+					try {
+						if(futureMaze.get() != null)
+						model.getMazeMap().put(args[0], futureMaze.get());
+						else
+							view.displayMessage("Maze creation failed.");
+					} catch (InterruptedException | ExecutionException e) {
+						e.printStackTrace();
+					}
+
 				}
 			}
 		});
@@ -124,13 +134,28 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				executor.submit(new Runnable() {
-					
+				Future<Solution<Position>> futureSol = executor.submit(new Callable<Solution<Position>>() {
+
 					@Override
-					public void run() {					
-						model.solveMaze(args[0], args[1]);		
+					public Solution<Position> call() throws Exception {
+						
+						return model.solveMaze(args[0], args[1]);
 					}
 				});
+				
+				try {
+					if(futureSol.get() == null){
+						view.displayMessage("Solution creation failed.");
+					} else {
+						model.getSolutionMap().put(args[0], futureSol.get());
+						view.displayMessage("Solution creation succeed.");
+					}
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+					
+				
+				
 			}
 		});
 		commandMap.put("display", new Command() {
@@ -201,6 +226,15 @@ public class Presenter implements Observer {
 					view.displayMessage("There is no such file!");
 				else
 					view.displayMessage("The size of the maze in the file is " + size + " bytes.");
+			}
+		});
+		
+		commandMap.put("exit", new Command() {
+			
+			@Override
+			public void doCommand(String[] args) {
+				view.displayMessage("Thanks for playing!");
+				executor.shutdown();
 			}
 		});
 

@@ -7,18 +7,18 @@ import algorithms.mazeGenerators.Maze3D;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
-public interface Model {
+public interface Model  {
 	/**
 	*@author Yaniv and Asaf
 	*@return Generate the maze from the parameters.
 	 */
-	public void generateMaze(String name,int layers, int rows, int columns);
+	public Maze3D generateMaze(String name,int layers, int rows, int columns);
 	
 	/**
 	*@author Yaniv and Asaf
 	*@return Gets the solution of a maze.
 	 */
-	public void solveMaze(String name,String method);
+	public Solution<Position> solveMaze(String name,String method);
 	
 	/**
 	*@author Yaniv and Asaf

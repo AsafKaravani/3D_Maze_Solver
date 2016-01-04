@@ -1,5 +1,6 @@
 package mvp.boot;
 
+import mvp.model.Model;
 import mvp.model.MyModel;
 import mvp.presenter.Presenter;
 import mvp.view.BasicWindow;
@@ -11,12 +12,13 @@ public class Run {
 
 	public static void main(String[] args) {
 		MyModel model = new MyModel();
-		ControlScreen view = new ControlScreen("yaniv",800,400);
+		ConsoleView view = new ConsoleView();
 		Presenter pres = new Presenter(view, model);	
 		model.addObserver(pres);
 		view.addObserver(pres);
 		
 		view.run();
+		
 	}
 
 }

@@ -16,6 +16,7 @@ public abstract class BasicWindow extends Observable implements Runnable, View{
    shell  = new Shell(display);
    shell.setSize(width,height);
    shell.setText(title);
+   
  }
   
   abstract void initWidgets();
