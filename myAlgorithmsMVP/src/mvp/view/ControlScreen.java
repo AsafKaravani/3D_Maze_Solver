@@ -19,8 +19,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-
 import algorithms.mazeGenerators.Maze3D;
 import mvp.model.notifers.MazeCreationNotifier;
 
@@ -51,6 +49,7 @@ public class ControlScreen extends BasicWindow implements View{
 				case SWT.Selection:
 			TextScreen t=new TextScreen(display, "new maze 3D game", 400, 400);
 			t.run();
+			
 					
 					setChanged();
 					notifyObservers("generate 3d maze"+" "+t.getTextCommand());
@@ -101,7 +100,7 @@ public class ControlScreen extends BasicWindow implements View{
 			public void handleEvent(Event args) {
 				switch (args.type) {
 				case SWT.Selection:
-					SingleTextScreen s=new SingleTextScreen(display, "Display maze", 400, 400);
+				SingleTextScreen s=new SingleTextScreen(display, "Display maze", 400, 400);
 					s.run();
 					setChanged();
 					notifyObservers("display solution"+s.getTextCommand());
@@ -123,8 +122,14 @@ public class ControlScreen extends BasicWindow implements View{
 
 	@Override
 	public void displayMessage(String message) {
-	ConsoleDisplayMassage textMessage=new ConsoleDisplayMassage(display, "message", message);
-	textMessage.run();
+	Thread t=new Thread(new Runnable() {
+		@Override
+		public void run() {
+			ConsoleDisplayMassage textMessage=new ConsoleDisplayMassage(display, "message", message);
+			textMessage.run();	
+		}
+	});
+	t.run();
 	}
 
 	@Override
