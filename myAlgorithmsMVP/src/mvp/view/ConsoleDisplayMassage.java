@@ -2,8 +2,11 @@ package mvp.view;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -25,7 +28,6 @@ public class ConsoleDisplayMassage implements Runnable {
 		shell.setLayout(new GridLayout(1, true));
 		Label textMessage = new Label(shell, SWT.NULL);
 		textMessage.setText(massage);
-
 	}
 
 	@Override
