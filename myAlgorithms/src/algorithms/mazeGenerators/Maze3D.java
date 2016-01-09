@@ -1,15 +1,29 @@
+/**
+ * Open this Asaf
+ * class Recursion {
+ * function DebugToDo() {
+ * 	 get_snacks();
+ *   Debug();
+ * }
+ * 
+ * function Debug() {
+ *   DebugToDo();
+ *   //todo: debug
+ * }
+ * }
+ * //:P
+ */
+
 package algorithms.mazeGenerators;
 
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
-
-import com.sun.org.apache.bcel.internal.util.ByteSequence;
 
 import algorithms.io.Compressible;
 import algorithms.search.Searchable;
 import algorithms.search.State;
 
-public class Maze3D implements Searchable<Position>, Compressible {
+public class Maze3D implements Searchable<Position>, Compressible, Serializable {
 	// ---------Variables---------//
 	private int[][][] maze;
 	private Position startPoint;

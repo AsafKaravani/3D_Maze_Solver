@@ -1,6 +1,8 @@
 package algorithms.search;
 
-public class State<T extends Comparable<T>> implements Comparable<State<T>> {
+import java.io.Serializable;
+
+public class State<T extends Comparable<T>> implements Comparable<State<T>>, Serializable {
 	//---------Variables---------//
 	private T state;
 	private int distance;

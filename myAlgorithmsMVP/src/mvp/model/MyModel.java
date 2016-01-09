@@ -5,10 +5,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.Future;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import algorithms.io.MyCompressorOutputStream;
 import algorithms.io.MyDecompressorInputStream;
@@ -41,7 +49,7 @@ public class MyModel extends Observable implements Model {
 			if (rows % 2 == 0)
 				rows++;
 
-			else if (columns % 2 == 0)
+			if (columns % 2 == 0)
 				columns++;
 
 			
@@ -186,5 +194,39 @@ public class MyModel extends Observable implements Model {
 			return mazeMap.get(name);
 		else
 			return null;
+	}
+	
+	@Override
+	public void saveMaps(){
+		try {
+			ObjectOutput out = new ObjectOutputStream(new FileOutputStream("maps"));
+			out.writeObject(mazeMap);
+			out.writeObject(solutionMap);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+
+	public void loadMaps(){
+		File f = new File("maps");
+		if(!(f.exists()))
+			return;
+		
+			try {
+				ObjectInput in = new ObjectInputStream(new FileInputStream("maps"));
+				mazeMap = (HashMap<String, Maze3D>)in.readObject();
+				solutionMap = (HashMap<String, Solution<Position>>) in.readObject();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		
+		
 	}
 }

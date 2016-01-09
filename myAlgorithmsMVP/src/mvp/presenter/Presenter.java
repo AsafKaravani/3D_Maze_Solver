@@ -27,12 +27,13 @@ public class Presenter implements Observer {
 	/**
 	 * Constructor that gets a Model and a View.
 	 * 
-	 * @author Asaf and Yaniv(A.K.A. looser)
+	 * @author Asaf and Yaniv
 	 */
 	public Presenter(View view, Model model) {
 		initCommands();
 		this.view = view;
 		this.model = model;
+		model.loadMaps();
 		executor = Executors.newFixedThreadPool(3);
 
 	}
@@ -120,7 +121,7 @@ public class Presenter implements Observer {
 					
 					try {
 						if(futureMaze.get() != null)
-						model.getMazeMap().put(args[0], futureMaze.get());
+							model.getMazeMap().put(args[0], futureMaze.get());
 						else
 							view.displayMessage("Maze creation failed.");
 					} catch (InterruptedException | ExecutionException e) {
@@ -234,7 +235,10 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 				view.displayMessage("Thanks for playing!");
+				model.saveMaps();
 				executor.shutdown();
+				System.exit(0);
+				
 			}
 		});
 

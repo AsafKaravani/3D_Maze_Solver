@@ -1,6 +1,8 @@
 package algorithms.mazeGenerators;
 
-public class Position implements Comparable<Position>{
+import java.io.Serializable;
+
+public class Position implements Comparable<Position>, Serializable{
 	//---------Variables---------//
 	private int layer;
 	private int row;
@@ -25,6 +27,14 @@ public class Position implements Comparable<Position>{
 	
 	//		Constructor
 	
+	public Maze3D getInsideOf() {
+		return insideOf;
+	}
+
+	public void setInsideOf(Maze3D insideOf) {
+		this.insideOf = insideOf;
+	}
+
 	public Position(int layer, int row, int column,Maze3D insideOf){
 		this.layer = layer;
 		this.row = row;

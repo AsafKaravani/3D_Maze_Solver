@@ -70,7 +70,7 @@ public interface Model  {
 	
 	/**
 	*@author Yaniv and Asaf
-	*@return A slice of the 3D maze.
+	*@return A 2D slice of the 3D maze.
 	 */
 	public int[][] getCrossSection(int index, String name);
 	
@@ -78,5 +78,22 @@ public interface Model  {
 	public HashMap<String, Solution<Position>> getSolutionMap();
 	
 	public HashMap<String, Maze3D> getMazeMap();
+	
+	/**
+	 * This function will save the mazes map and the solutions map
+	 * in order that the {@link #loadMaps()} function could load them
+	 * back to the {@link Model}'s maps after the program finished.
+	 * 
+	 * @author Asaf and Yaniv
+	 */
+	public void saveMaps();
+	
+	/**
+	 * This function will load the saved mazes map and the solutions map with the 
+	 * {@link #saveMaps()} function to the {@link Model}.
+	 * 
+	 * @author Asaf and Yaniv
+	 */
+	public void loadMaps();
 	
 }

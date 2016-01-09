@@ -1,8 +1,9 @@
 package algorithms.search;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Solution<T extends Comparable<T>> {
+public class Solution<T extends Comparable<T>> implements Serializable {
 	private ArrayList<State<T>> pathToSolution;
 	
 	
