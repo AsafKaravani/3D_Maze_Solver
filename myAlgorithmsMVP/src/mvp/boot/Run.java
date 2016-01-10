@@ -8,18 +8,24 @@ import mvp.view.ConsoleView;
 import mvp.view.ControlScreen;
 import mvp.view.GameWindow;
 import mvp.view.View;
+import mvp.view.CanvasWindow;
 
 public class Run {
 
 	public static void main(String[] args) {
-		//This is the MVP connection while using the GUI.
+		//Checking the drawing on canvas.
+		CanvasWindow win = new CanvasWindow("Canvas", 600, 600);
+		win.run();
+		
+		
+/*		//This is the MVP connection while using the GUI.
 		MyModel model = new MyModel();
 		GameWindow view = new GameWindow("3D Labyrinth", 300, 600);
 		Presenter pres = new Presenter(view, model);
 		model.addObserver(pres);
 		view.addObserver(pres);
 		
-		view.run();
+		view.run();*/
 		
 		
 		//This is the MVP connection while using the console.
