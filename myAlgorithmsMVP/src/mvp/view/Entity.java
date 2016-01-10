@@ -34,8 +34,8 @@ public abstract class Entity {
 	public void draw(GC gc) {
 		final Image scaledImage = new Image(device,
 				sprite.getImageData().scaledTo((int) (scale * 64), (int) (scale * 64)));
-		gc.drawImage(scaledImage, (int) (pos.getColumn() * (sprite.getBounds().width * scale)),
-				(int) (pos.getRow() * (sprite.getBounds().height * scale)));
+		gc.drawImage(scaledImage, (int) (pos.getColumn() * (64 * scale)),
+				(int) (pos.getRow() * (64 * scale)));
 	}
 	
 }

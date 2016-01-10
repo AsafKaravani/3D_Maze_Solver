@@ -42,13 +42,23 @@ public class CanvasWindow extends BasicWindow {
 		canvas.setSize(150, 150);
 	    shell.open();
 		GC gc = new GC(canvas);
+		Wall w1 = new Wall(new Position(0, 1, 1, null), display);
+		Wall w2 = new Wall(new Position(0, 2, 1, null), display);
+		Wall w3 = new Wall(new Position(0, 1, 3, null), display);
+		Wall w4 = new Wall(new Position(0, 2, 3, null), display);
+		Path p1 = new Path(new Position(0, 1, 2, null), display);
+		Path p2 = new Path(new Position(0, 2, 2, null), display);
+		Character c1 = new Character(new Position(0, 2, 2, null), display);
+		Hint h1 = new Hint(new Position(0, 1, 2, null), display);
 		
-		Wall w = new Wall(new Position(0, 1, 1, null), display);
-		Path w2 = new Path(new Position(0, 1, 2, null), display);
-		w.setScale(1);
-		w2.setScale(1);
-		w.draw(gc);
+		w1.draw(gc);
 		w2.draw(gc);
+		w3.draw(gc);
+		w4.draw(gc);
+		p1.draw(gc);
+		p2.draw(gc);
+		c1.draw(gc);
+		h1.draw(gc);
 		
 	
 		
