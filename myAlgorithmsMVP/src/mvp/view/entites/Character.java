@@ -1,4 +1,4 @@
-package mvp.view;
+package mvp.view.entites;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
@@ -9,8 +9,9 @@ public class Character extends Entity {
 
 	public Character(Position pos, Device device) {
 		this.device = device;
-		this.pos = pos;
+		this.pos = new Position(pos.getLayer(), pos.getRow(), pos.getColumn(), null);
 		this.sprite = new Image(device, "assets\\Luffy_Front.png");
+		this.layer=2;
 	}
 
 	public void moveRight() {

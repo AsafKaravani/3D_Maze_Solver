@@ -11,7 +11,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.ConnectException;
+import java.net.Socket;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.Future;
@@ -27,6 +30,7 @@ import algorithms.search.AStar;
 import algorithms.search.BestFirstSearch;
 import algorithms.search.MazeAirDistance;
 import algorithms.search.Solution;
+import javafx.geometry.Pos;
 import mvp.model.notifers.MazeCreationNotifier;
 import mvp.model.notifers.MazeSolutionNotifier;
 import mvp.presenter.Presenter;
@@ -86,7 +90,38 @@ public class MyModel extends Observable implements Model {
 		if (mazeMap.containsKey(name)) {
 			if (!solutionMap.containsKey(name)) {
 				if (algorithm.equals("BFS")) {
-					return new BestFirstSearch().search(mazeMap.get(name));
+					try {
+						Socket server = new Socket("localhost", 5400);
+						if (server.isConnected()) {		
+							ObjectOutputStream out = new ObjectOutputStream(server.getOutputStream());
+							out.flush();							
+							out.writeObject("solve");
+							out.writeObject(mazeMap.get(name).compress());
+							out.writeObject("BFS");					
+							ObjectInputStream in = new ObjectInputStream(server.getInputStream());
+							Solution<Position> sol = (Solution<Position>) in.readObject();
+							in.close();
+							out.close();
+							return sol;
+							
+							
+						} else {
+							notifyObservers(new MazeSolutionNotifier(name, false));
+							return null;
+						}
+						
+					} catch (UnknownHostException e) {
+						e.printStackTrace();
+					} catch (ConnectException e) {
+						System.out.println("Could not connect to the server.");
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} 
+					
+
+				//	return new BestFirstSearch().search(mazeMap.get(name));
 					
 				} else if (algorithm.equals("AStar")) {		
 					return new AStar(new MazeAirDistance(), mazeMap.get(name).getGoalState())

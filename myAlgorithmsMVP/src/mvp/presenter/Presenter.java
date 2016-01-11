@@ -119,6 +119,7 @@ public class Presenter implements Observer {
 						}
 					});
 					
+					
 					try {
 						if(futureMaze.get() != null)
 							model.getMazeMap().put(args[0], futureMaze.get());
@@ -179,15 +180,9 @@ public class Presenter implements Observer {
 					view.displayMessage("There is no maze in that name.");
 				} else {
 					Solution sol = model.getSolution(args[0]);
-					Iterator<State> i = sol.getPathToSolution().iterator();
-					while (i.hasNext()) {
-						State s = i.next();
-						if (s == null)
-							break;
-						else
-							view.displayMessage(s.getState().toString());
+							view.displaySolution(sol);
 					}
-				}
+				
 			}
 		});
 		commandMap.put("save maze", new Command() {

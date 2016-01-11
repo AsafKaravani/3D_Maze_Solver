@@ -1,4 +1,4 @@
-package mvp.view;
+package mvp.view.entites;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
@@ -10,5 +10,6 @@ public class Hint extends Entity {
 			this.device = device;
 			this.pos = pos;
 			this.sprite = new Image(device, "assets\\Hint_Coin.png");
+			this.layer=1;
 		}
 }

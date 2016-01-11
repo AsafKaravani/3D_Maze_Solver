@@ -1,4 +1,4 @@
-package mvp.view;
+package mvp.view.entites;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
@@ -11,5 +11,6 @@ public class Path extends Entity {
 		this.device = device;
 		this.pos = pos;
 		this.sprite = new Image(device, "assets\\grass2.jpg");
+		this.layer=0;
 	}
 }

@@ -1,4 +1,4 @@
-package mvp.view;
+package mvp.view.entites;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
@@ -12,7 +12,7 @@ public class Wall extends Entity {
 		this.device = device;
 		this.pos = pos;
 		this.sprite = new Image(device, "assets\\brick_wall_tiled_perfect.png");
-
+		this.layer=0;
 	}
 
 
