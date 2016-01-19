@@ -36,7 +36,10 @@ public class Game {
 	private Device device;
 	private Solution<Position> sol = null;
 	private boolean showHints = false;
-
+	/**
+	*@author Yaniv and Asaf
+	*@return set the constractor to the device canvas and maze to the screen
+	 */
 	public Game(Device device, Canvas canvas, Maze3D maze) {
 		this.device = device;
 		this.gameBoard = canvas;
@@ -62,7 +65,10 @@ public class Game {
 	public void setShowHints(boolean showHints) {
 		this.showHints = showHints;
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return draws the entity's from the arraylist to the screen
+	 */
 	public void draw() {
 		if (maze.getEndPoint().equals(character.getPos())) {
 			 Image i = new Image (device, "assets\\Win_Image.jpg");
@@ -86,7 +92,10 @@ public class Game {
 			}
 		}
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return fill the arraylist of entity's to creats the maze using walls and paths
+	 */
 	public void fillEntitiesQueue() {
 		entityQueue.add(character);
 
@@ -124,7 +133,10 @@ public class Game {
 			}
 		}
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return every time the client move the character it is submitted here for redraw
+	 */
 	public boolean moveCharacter(int direction) {
 		switch (direction) {
 		case DIRECTION.DOWN:

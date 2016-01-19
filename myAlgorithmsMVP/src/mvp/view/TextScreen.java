@@ -11,7 +11,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
+/**
+*@author Yaniv and Asaf
+*@return a wigit use for getting the start data gets the name layers rows and culomns of the maze to start a maze using these data
+ */
 public class TextScreen implements Runnable {
 	Display display;
 	Shell shell;

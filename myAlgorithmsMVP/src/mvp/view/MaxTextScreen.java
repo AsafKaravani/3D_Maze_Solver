@@ -10,7 +10,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
+/**
+*@author Yaniv and Asaf
+*@return a wigit use for decision witch algo needed to be use
+ */
 public class MaxTextScreen implements Runnable {
 	Display display;
 	Shell shell;
@@ -24,7 +27,10 @@ public class MaxTextScreen implements Runnable {
 		shell.setText(title);
 		shell.setSize(width, height);
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return the start of the wigit
+	 */
 	void initWidgets() {
 		shell.setLayout(new GridLayout(2, true));
 		Label textLabel = new Label(shell, SWT.NULL);

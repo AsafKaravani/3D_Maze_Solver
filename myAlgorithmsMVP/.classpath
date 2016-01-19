@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SWT"/>
-	<classpathentry kind="lib" path="C:/Users/Asaf/Desktop/myAlgorithms.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Yaniv/Desktop/swt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Yaniv/Desktop/myAlgorithem.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

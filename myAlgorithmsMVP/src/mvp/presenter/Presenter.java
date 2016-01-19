@@ -37,7 +37,10 @@ public class Presenter implements Observer {
 		executor = Executors.newFixedThreadPool(3);
 
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return it gets the args from the notify method that is in view and model and splite the command that will know where the args are from (view or model) and will move it to the next target  
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("Updating Presenter");

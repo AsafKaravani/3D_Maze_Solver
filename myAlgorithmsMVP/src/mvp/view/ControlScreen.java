@@ -54,11 +54,17 @@ public class ControlScreen extends BasicWindow implements View {
 	public void setGame(Game game) {
 		this.game = game;
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return a super constractor
+	 */
 	public ControlScreen(String title, int width, int height) {
 		super(title, width, height);
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return set the gui and form the menu using the swt wigit and gets buttons to start the game
+	 */
 	@Override
 	void initWidgets() {
 		shell.setSize(500, 500);
@@ -342,7 +348,10 @@ public class ControlScreen extends BasicWindow implements View {
 
 		shell.setMenuBar(menuBar);
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return display the current maze
+	 */
 	@Override
 	public void displayMaze(Maze3D maze) {
 		if(game != null)
@@ -364,7 +373,10 @@ public class ControlScreen extends BasicWindow implements View {
 			}
 		});
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return display the inserted message
+	 */
 	@Override
 	public void displayMessage(String message) {
 
