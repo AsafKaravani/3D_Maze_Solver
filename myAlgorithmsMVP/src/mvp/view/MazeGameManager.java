@@ -23,7 +23,16 @@ import mvp.view.entites.Entity;
 import mvp.view.entites.Path;
 import mvp.view.entites.Wall;
 
-public class GameManager {
+/**
+ * 
+ * The {@link MazeGameManager} class is used to manage and {@link #draw() draw} the {@link Entity entities} of our 3D maze game.
+ * 
+ * @author Asaf and Yaniv
+ *
+ */
+
+
+public class MazeGameManager {
 	private Canvas canvas;
 	private Maze3D gameMaze3D;
 	private double scale = 1;
@@ -32,7 +41,7 @@ public class GameManager {
 	private GC gc;
 	private Device device;
 
-	public GameManager(Canvas canvas, Maze3D gaMaze3d, GC gc, double scale, Device device) {
+	public MazeGameManager(Canvas canvas, Maze3D gaMaze3d, GC gc, double scale, Device device) {
 		this.canvas = canvas;
 		this.gc = gc;
 		this.device = device;
@@ -48,6 +57,11 @@ public class GameManager {
 		});
 	}
 
+	/**
+	 * 
+	 * 
+	 * @author Asaf and Yaniv
+	 */
 	public void draw() {
 		for (Entity entity : entityQueue) {
 			//entity.setScale(scale);

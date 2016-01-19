@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-public class myMaze3DGenerator extends Maze3DGeneratorAbstract {
+public class MyMaze3DGenerator extends Maze3DGeneratorAbstract {
 	//---------Variables--------//
 	private Stack<Position> stackOfPositions = new Stack<Position>();
 	private Maze3D myMaze;

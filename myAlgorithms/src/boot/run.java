@@ -10,7 +10,7 @@ import algorithms.io.MyCompressorOutputStream;
 import algorithms.io.MyDecompressorInputStream;
 import algorithms.mazeGenerators.Maze3D;
 import algorithms.mazeGenerators.Position;
-import algorithms.mazeGenerators.myMaze3DGenerator;
+import algorithms.mazeGenerators.MyMaze3DGenerator;
 import algorithms.search.AStar;
 import algorithms.search.BestFirstSearch;
 import algorithms.search.Heuristic;
@@ -22,7 +22,7 @@ import algorithms.search.State;
 public class run {
 
 	public static void main(String[] args) {
-		Maze3D maze = new myMaze3DGenerator().generate(5, 7, 7);
+		Maze3D maze = new MyMaze3DGenerator().generate(5, 7, 7);
 		BestFirstSearch bfs = new BestFirstSearch();
 		AStar aStrMan = new AStar(new MazeManhattenDistance(), maze.getGoalState());
 		AStar aStrAir =  new AStar(new MazeAirDistance(), maze.getGoalState());

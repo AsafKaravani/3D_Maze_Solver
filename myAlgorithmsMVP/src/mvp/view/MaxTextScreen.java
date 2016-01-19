@@ -27,34 +27,28 @@ public class MaxTextScreen implements Runnable {
 
 	void initWidgets() {
 		shell.setLayout(new GridLayout(2, true));
-		Label textLabel = new Label(shell, SWT.NULL);
-		textLabel.setText("name:");
-		Text singleText = new Text(shell, SWT.SINGLE | SWT.BORDER);
-		singleText.addListener(SWT.Modify, new Listener() {
-		
+		Button BFS = new Button(shell,SWT.PUSH);
+		BFS.setText("BFS");
+		BFS.addListener(SWT.Selection, new Listener() {
+			
 			@Override
 			public void handleEvent(Event args) {
-			}
+					switch (args.type) {
+					case SWT.Selection:
+						solveName="BFS";
+						shell.dispose();
+					}
+				}
 		});
-		Label Slabel = new Label(shell, SWT.NULL);
-		Slabel.setText("solution:");
-		Slabel.addListener(SWT.Modify, new Listener() {
-
-			@Override
-			public void handleEvent(Event arg0) {
-			}
-		});
-		Button OKbutton = new Button(shell, SWT.PUSH);
-		OKbutton.setText("OK");
-		OKbutton.addListener(SWT.Selection, new Listener() {
+		Button AStar = new Button(shell, SWT.PUSH);
+		AStar.setText("AStar");
+		AStar.addListener(SWT.Selection, new Listener() {
 
 			@Override
 			public void handleEvent(Event args) {
 				switch (args.type) {
 				case SWT.Selection:
-					textCommand = textLabel.getText() + " " + Slabel.getText();
-					solveName=singleText.getText();
-					nameCommand=singleText.getText();
+					solveName="AStar";
 					shell.dispose();
 				}
 			}
