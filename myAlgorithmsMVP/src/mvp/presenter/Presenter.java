@@ -17,6 +17,7 @@ import algorithms.search.State;
 import mvp.model.Model;
 import mvp.model.notifers.MazeCreationNotifier;
 import mvp.model.notifers.MazeSolutionNotifier;
+import mvp.model.notifers.ServerStateNotifier;
 import mvp.view.View;
 
 public class Presenter implements Observer {
@@ -82,15 +83,20 @@ public class Presenter implements Observer {
 				}
 				else
 					view.displayMessage("The maze \"" + ((MazeCreationNotifier) arg).getMazeName() + "\" is already exists! Please choose another name." );
-			}
-			
-			else if (arg instanceof MazeSolutionNotifier){
+				
+			} else if (arg instanceof MazeSolutionNotifier){
 				if(((MazeSolutionNotifier) arg).isSucceed()) {
 					view.displayMessage("The solution for the maze \"" + ((MazeSolutionNotifier) arg).getMazeName() + "\" is ready.");					
 				} else {
 					view.displayMessage("The solution for the maze \"" + ((MazeSolutionNotifier) arg).getMazeName() + "\" coudn't be created!");
 				}
-			}			
+				
+			} else if (arg instanceof ServerStateNotifier){
+				if(!((ServerStateNotifier)arg).isConnectionSucceed())
+					view.displayMessage("Can't connect to the server.");
+				else
+					view.setConnectedToServer(true);
+			}
 		}
 	}
 
@@ -167,7 +173,6 @@ public class Presenter implements Observer {
 				if (model.getMaze(args[0]) == null) {
 					view.displayMessage("There is no maze in that name.");
 				} else {
-					view.displayMessage("The requested is:");
 					view.displayMaze(model.getMaze(args[0]));
 				}
 			}

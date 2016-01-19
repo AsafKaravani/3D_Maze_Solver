@@ -7,15 +7,11 @@ import mvp.view.BasicWindow;
 import mvp.view.ConsoleView;
 import mvp.view.ControlScreen;
 import mvp.view.View;
-import mvp.view.CanvasWindow;
 
 public class Run {
 
 	public static void main(String[] args) {
-		//Checking the drawing on canvas.
-/*		CanvasWindow win = new CanvasWindow("Canvas", 700, 700);
-		win.run();*/
-		
+
 		
 	//This is the MVP connection while using the GUI.
 		MyModel model = new MyModel();

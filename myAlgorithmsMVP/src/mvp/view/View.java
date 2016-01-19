@@ -10,6 +10,6 @@ public interface View {
 	public void displaySolution(Solution sol);
 	public void getUserCommand();
 	public void run();
-	
+	public void setConnectedToServer(boolean connectedToServer);
 
 }

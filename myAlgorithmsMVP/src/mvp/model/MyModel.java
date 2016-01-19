@@ -33,6 +33,7 @@ import algorithms.search.Solution;
 import javafx.geometry.Pos;
 import mvp.model.notifers.MazeCreationNotifier;
 import mvp.model.notifers.MazeSolutionNotifier;
+import mvp.model.notifers.ServerStateNotifier;
 import mvp.presenter.Presenter;
 
 public class MyModel extends Observable implements Model {
@@ -102,17 +103,21 @@ public class MyModel extends Observable implements Model {
 							Solution<Position> sol = (Solution<Position>) in.readObject();
 							in.close();
 							out.close();
+							setChanged();
+							notifyObservers(new ServerStateNotifier(true));
 							return sol;
 							
 							
 						} else {
-							notifyObservers(new MazeSolutionNotifier(name, false));
+							notifyObservers(new ServerStateNotifier(false));
 							return null;
 						}
 						
 					} catch (UnknownHostException e) {
+						notifyObservers(new ServerStateNotifier(false));
 						e.printStackTrace();
 					} catch (ConnectException e) {
+						notifyObservers(new ServerStateNotifier(false));
 						System.out.println("Could not connect to the server.");
 					} catch (IOException e) {
 						e.printStackTrace();

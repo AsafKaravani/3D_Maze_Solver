@@ -23,6 +23,7 @@ import mvp.view.entites.Hole;
 import mvp.view.entites.Ladder;
 import mvp.view.entites.Path;
 import mvp.view.entites.Wall;
+import mvp.view.entites.WinGoal;
 
 public class Game {
 	private Canvas gameBoard;
@@ -103,6 +104,10 @@ public class Game {
 			}
 		}
 
+	    if (maze.getEndPoint().getLayer()==character.getPos().getLayer()) {
+            entityQueue.add(new WinGoal(maze.getEndPoint(), device));
+        }
+	    
 		for (int i = 0; i < maze.getMaze()[0].length; i++) {
 			for (int j = 0; j < maze.getMaze()[0][0].length; j++) {
 				int cellType = maze.getMaze()[character.getPos().getLayer()][i][j];
@@ -238,6 +243,7 @@ public class Game {
 	public void newGame(Maze3D maze) {
 		character.getSprite().dispose();
 		character = new Character(maze.getStartPoint(), device);
+		this.maze = maze;
 		fillEntitiesQueue();
 		draw();
 	}

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Observable;
 
 import algorithms.mazeGenerators.Maze3D;
+import algorithms.search.Solution;
 
 public class ConsoleView extends Observable implements View, Runnable {
 	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -52,6 +53,20 @@ public class ConsoleView extends Observable implements View, Runnable {
 			getUserCommand();
 		
 	}
+
+	@Override
+	public void displaySolution(Solution sol) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setConnectedToServer(boolean connectedToServer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 
 	
