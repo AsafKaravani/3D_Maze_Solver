@@ -1,151 +1,103 @@
 package mvp.view;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+/**
+*@author Yaniv and Asaf
+*@return a wigit use for decision witch algo needed to be use
+ */
+public class MaxTextScreen implements Runnable {
+	Display display;
+	Shell shell;
+	String textCommand = null;
+	String nameCommand=null;
+	String solveName=null;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-
-import algorithms.mazeGenerators.Maze3D;
-import algorithms.mazeGenerators.Position;
-import mvp.view.entites.Character;
-import mvp.view.entites.Entity;
-import mvp.view.entites.Path;
-import mvp.view.entites.Wall;
-
-public class GameManager {
-	private Canvas canvas;
-	private Maze3D gameMaze3D;
-	private double scale = 1;
-	private PriorityQueue<Entity> entityQueue;
-	private Character player;
-	private GC gc;
-	private Device device;
-
-	public GameManager(Canvas canvas, Maze3D gaMaze3d, GC gc, double scale, Device device) {
-		this.canvas = canvas;
-		this.gc = gc;
-		this.device = device;
-		this.gameMaze3D = gaMaze3d;
-		this.player = new Character(gameMaze3D.getStartPoint(), this.device);
-		this.scale = scale;
-		entityQueue = new PriorityQueue<>(new Comparator<Entity>() {
-
+	public MaxTextScreen(Display display, String title, int width, int height) {
+		this.display = display;
+		shell = new Shell(display);
+		shell.setText(title);
+		shell.setSize(width, height);
+	}
+	/**
+	*@author Yaniv and Asaf
+	*@return the start of the wigit
+	 */
+	void initWidgets() {
+		shell.setLayout(new GridLayout(2, true));
+		Label textLabel = new Label(shell, SWT.NULL);
+		textLabel.setText("name:");
+		Text singleText = new Text(shell, SWT.SINGLE | SWT.BORDER);
+		singleText.addListener(SWT.Modify, new Listener() {
+		
 			@Override
-			public int compare(Entity o1, Entity o2) {
-				return o1.getPos().getLayer() - o2.getPos().getLayer();
+			public void handleEvent(Event args) {
 			}
 		});
+		Label Slabel = new Label(shell, SWT.NULL);
+		Slabel.setText("solution:");
+		Slabel.addListener(SWT.Modify, new Listener() {
+
+			@Override
+			public void handleEvent(Event arg0) {
+			}
+		});
+		Button OKbutton = new Button(shell, SWT.PUSH);
+		OKbutton.setText("OK");
+		OKbutton.addListener(SWT.Selection, new Listener() {
+
+			@Override
+			public void handleEvent(Event args) {
+				switch (args.type) {
+				case SWT.Selection:
+					textCommand = textLabel.getText() + " " + Slabel.getText();
+					solveName=singleText.getText();
+					nameCommand=singleText.getText();
+					shell.dispose();
+				}
+			}
+		});
+		shell.pack();
 	}
 
-	public void draw() {
-		for (Entity entity : entityQueue) {
-			//entity.setScale(scale);
-			entity.draw(gc);
-		}
-
+	public String returnMessage(String messege) {
+		return messege;
 	}
 
-	public void addEntity(Entity entity) {
-		entityQueue.add(entity);
+	public String getTextCommand() {
+		return textCommand;
+	}
+	public String getSolveName() {
+		return solveName;
 	}
 
-	public Maze3D getGameMaze3D() {
-		return gameMaze3D;
+	public void setSolveName(String solveName) {
+		this.solveName = solveName;
 	}
 
-	public void setGameMaze3D(Maze3D gameMaze3D) {
-		this.gameMaze3D = gameMaze3D;
-	}
+	@Override
+	public void run() {
+		initWidgets();
+		shell.open();
+		// main event loop
+		while (!shell.isDisposed()) { // while window isn't closed
 
-	public void manageEntities() {
-//		addEntity(player);
-//		int numOfEntity = (int) (512 / (scale * 64));
-//		int[][] maze2DSlice = new int[numOfEntity][numOfEntity];
-//		for (int i = 0; i < maze2DSlice.length; i++) {
-//			for (int j = 0; j < maze2DSlice[0].length; j++) {
-//				if ((player.getPos().getRow() - (numOfEntity / 2) + i < 0
-//						|| player.getPos().getRow() - (numOfEntity / 2) + i > gameMaze3D.getMaze()[0].length - 1)
-//						|| (player.getPos().getColumn() - (numOfEntity / 2) + j < 0 || player.getPos().getColumn()
-//								- (numOfEntity / 2) + j > gameMaze3D.getMaze()[0][0].length - 1)) {
-//					maze2DSlice[i][j] = -1;
-//				} else {
-//					System.out.println((player.getPos().getRow() + (numOfEntity / 2) + i) + ", " + (player.getPos().getColumn() - (numOfEntity / 2) + j));
-//					maze2DSlice[i][j] = gameMaze3D.getMaze()[player.getPos().getLayer()][player.getPos().getRow() + i][player.getPos().getColumn() - (numOfEntity / 2) + j];
-//				}
-		addEntity(player);
-		int numOfEntity = (int) (512 / (scale * 64));
-		int[][] maze2DSlice = new int[gameMaze3D.getMaze()[0].length][gameMaze3D.getMaze()[0][0].length];
-		for (int i = 0; i < maze2DSlice.length; i++) {
-			for (int j = 0; j < maze2DSlice[0].length; j++) {
-				if(i<0||i>maze2DSlice.length&&j<0||j>maze2DSlice[0].length){
-					maze2DSlice[i][j] = -1;
-			}else{
-				maze2DSlice[i][j] = gameMaze3D.getMaze()[player.getPos().getLayer()][i][j];
+			// 1. read events, put then in a queue.
+			// 2. dispatch the assigned listener
+			if (!display.readAndDispatch()) { // if the queue is empty
+				display.sleep(); // sleep until an event occurs
 			}
 
-				if (maze2DSlice[i][j] == 1) {
-					addEntity(new Wall(new Position(player.getPos().getLayer(), i, j, null), this.device));
-				} else  {
-					addEntity(new Path(new Position(player.getPos().getLayer(), i, j, null), this.device));
-				} 
-			}
-		}
+		} // shell is disposed
 	}
-	
-	
-//	public void moveKey(){
-//		Button moveUp=new Button(canvas, SWT.PUSH);
-//		Button moveDown=new Button(canvas, SWT.PUSH);
-//		Button moveLeft=new Button(canvas, SWT.PUSH);
-//		Button moveRight=new Button(canvas, SWT.PUSH);
-//		moveUp.addKeyListener(new KeyListener() {
-//			
-//			@Override
-//			public void keyReleased(KeyEvent arg0) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//			
-//			@Override
-//			public void keyPressed(KeyEvent arg0) {
-//				int tempMove=player.getPos().getColumn()-1;
-//				if(gameMaze3D.getMaze()[player.getPos().getLayer()][player.getPos().getRow()][player.getPos().getColumn()-1]==1){
-//					
-//				}
-//				else{
-//				player.getPos().setColumn(tempMove);
-//	Character playerTemp=new Character(player.getPos(), device);
-//	playerTemp.moveUp();
-//	manageEntities();
-//				}
-//			}
-//		}); 
-//		moveDown.addListener(SWT.Selection, new Listener() {
-//			
-//			@Override
-//			public void handleEvent(Event arg0) {
-//				int tempMove=player.getPos().getColumn()+1;
-//				if(gameMaze3D.getMaze()[player.getPos().getLayer()][player.getPos().getRow()][player.getPos().getColumn()+1]==1){
-//					
-//				}
-//				else{
-//				player.getPos().setColumn(tempMove);
-//	Character playerTemp=new Character(player.getPos(), device);
-//	playerTemp.moveDown();
-//	manageEntities();
-//				}
-//			}
-//		});
-//	
-	}
+
+}
+
