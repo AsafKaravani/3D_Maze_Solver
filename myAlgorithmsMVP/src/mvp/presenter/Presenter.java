@@ -17,7 +17,6 @@ import algorithms.search.State;
 import mvp.model.Model;
 import mvp.model.notifers.MazeCreationNotifier;
 import mvp.model.notifers.MazeSolutionNotifier;
-import mvp.model.notifers.ServerStateNotifier;
 import mvp.view.View;
 
 public class Presenter implements Observer {
@@ -38,7 +37,10 @@ public class Presenter implements Observer {
 		executor = Executors.newFixedThreadPool(3);
 
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return it gets the args from the notify method that is in view and model and splite the command that will know where the args are from (view or model) and will move it to the next target  
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("Updating Presenter");
@@ -83,20 +85,15 @@ public class Presenter implements Observer {
 				}
 				else
 					view.displayMessage("The maze \"" + ((MazeCreationNotifier) arg).getMazeName() + "\" is already exists! Please choose another name." );
-				
-			} else if (arg instanceof MazeSolutionNotifier){
+			}
+			
+			else if (arg instanceof MazeSolutionNotifier){
 				if(((MazeSolutionNotifier) arg).isSucceed()) {
 					view.displayMessage("The solution for the maze \"" + ((MazeSolutionNotifier) arg).getMazeName() + "\" is ready.");					
 				} else {
 					view.displayMessage("The solution for the maze \"" + ((MazeSolutionNotifier) arg).getMazeName() + "\" coudn't be created!");
 				}
-				
-			} else if (arg instanceof ServerStateNotifier){
-				if(!((ServerStateNotifier)arg).isConnectionSucceed())
-					view.displayMessage("Can't connect to the server.");
-				else
-					view.setConnectedToServer(true);
-			}
+			}			
 		}
 	}
 
