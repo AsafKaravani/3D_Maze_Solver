@@ -382,4 +382,10 @@ public class ControlScreen extends BasicWindow implements View {
 		game.setShowHints(true);
 
 	}
+
+	@Override
+	public void setConnectedToServer(boolean connectedToServer) {
+		// TODO Auto-generated method stub
+		
+	}
 }

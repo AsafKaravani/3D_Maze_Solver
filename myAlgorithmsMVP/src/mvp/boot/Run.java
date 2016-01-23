@@ -7,7 +7,7 @@ import mvp.view.BasicWindow;
 import mvp.view.ConsoleView;
 import mvp.view.ControlScreen;
 import mvp.view.View;
-import mvp.view.CanvasWindow;
+
 
 public class Run {
 

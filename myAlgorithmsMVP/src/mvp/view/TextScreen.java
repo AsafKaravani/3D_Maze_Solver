@@ -11,15 +11,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
+/**
+*@author Yaniv and Asaf
+*@return a wigit use for getting the start data gets the name layers rows and culomns of the maze to start a maze using these data
+ */
 public class TextScreen implements Runnable {
 	Display display;
 	Shell shell;
-	String textCommand = null;
-	String name = null;
-	String layer = null;
-	String rows = null;
-	String culomns = null;
+	String textCommand=null;
+	String name;
 
 	public String getName() {
 		return name;
@@ -94,26 +94,23 @@ public class TextScreen implements Runnable {
 			}
 		});
 		textLayer.addListener(SWT.Modify, new Listener() {
-
+			
 			@Override
 			public void handleEvent(Event arg0) {
-				try {
-					okButton.setEnabled(true);
-				} catch (Exception e) {
-					okButton.setEnabled(false);
-				}
+					try {
+						okButton.setEnabled(true);
+					} catch (Exception e) {
+						okButton.setEnabled(false);
+					}
 			}
 		});
-		okButton.addListener(SWT.Selection, new Listener() {
-
+	okButton.addListener(SWT.Selection, new Listener() {
+			
 			@Override
 			public void handleEvent(Event arg0) {
 				if (okButton.getEnabled()) {
-					textCommand = textName.getText() + " " + textLayer.getText() + " " + textColumn.getText() + " "+ textRows.getText();
+					textCommand=textName.getText()+" "+textLayer.getText()+" "+textColumn.getText()+" "+textRows.getText();
 					name = textName.getText();
-					layer = textLayer.getText();
-					culomns = textColumn.getText();
-					rows = textRows.getText();
 					shell.dispose();
 				}
 			}
@@ -135,30 +132,6 @@ public class TextScreen implements Runnable {
 			}
 
 		} // shell is disposed
-	}
-
-	public String getLayer() {
-		return layer;
-	}
-
-	public void setLayer(String layer) {
-		this.layer = layer;
-	}
-
-	public String getRows() {
-		return rows;
-	}
-
-	public void setRows(String rows) {
-		this.rows = rows;
-	}
-
-	public String getCulomns() {
-		return culomns;
-	}
-
-	public void setCulomns(String culomns) {
-		this.culomns = culomns;
 	}
 
 	public String returnMessage(String messege) {
