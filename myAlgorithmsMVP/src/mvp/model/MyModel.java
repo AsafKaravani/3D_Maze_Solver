@@ -33,13 +33,15 @@ import algorithms.search.Solution;
 import javafx.geometry.Pos;
 import mvp.model.notifers.MazeCreationNotifier;
 import mvp.model.notifers.MazeSolutionNotifier;
-import mvp.model.notifers.ServerStateNotifier;
 import mvp.presenter.Presenter;
 
 public class MyModel extends Observable implements Model {
 	HashMap<String, Solution<Position>> solutionMap = new HashMap<>();
 	HashMap<String, Maze3D> mazeMap = new HashMap<>();
-
+	/**
+	*@author Yaniv and Asaf
+	*@return generate the maze using the name layer rows and columns
+	 */
 	@Override
 	public Maze3D generateMaze(String name, int layers, int rows, int columns) {
 		
@@ -83,7 +85,10 @@ public class MyModel extends Observable implements Model {
 	public void setMazeMap(HashMap<String, Maze3D> mazeMap) {
 		this.mazeMap = mazeMap;
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return gets from the presenter the name of the maze and the algo to solve it and from that its create a solution
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Solution<Position> solveMaze(String name, String algorithm) {
@@ -103,21 +108,17 @@ public class MyModel extends Observable implements Model {
 							Solution<Position> sol = (Solution<Position>) in.readObject();
 							in.close();
 							out.close();
-							setChanged();
-							notifyObservers(new ServerStateNotifier(true));
 							return sol;
 							
 							
 						} else {
-							notifyObservers(new ServerStateNotifier(false));
+							notifyObservers(new MazeSolutionNotifier(name, false));
 							return null;
 						}
 						
 					} catch (UnknownHostException e) {
-						notifyObservers(new ServerStateNotifier(false));
 						e.printStackTrace();
 					} catch (ConnectException e) {
-						notifyObservers(new ServerStateNotifier(false));
 						System.out.println("Could not connect to the server.");
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -145,7 +146,10 @@ public class MyModel extends Observable implements Model {
 		}
 
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return checks if there is a maze in the hashmap
+	 */ 
 	@Override
 	public boolean mazeExists(String name) {
 		if (mazeMap.containsKey(name)) {
@@ -153,7 +157,10 @@ public class MyModel extends Observable implements Model {
 		}
 		return false;
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return return the solution
+	 */
 	@Override
 	public Solution<Position> getSolution(String name) {
 		if (solutionMap.containsKey(name))
@@ -161,7 +168,10 @@ public class MyModel extends Observable implements Model {
 		else
 			return null;
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return saving the file to the ordered path
+	 */
 	@Override
 	public void saveToFile(String name, String fileName) {
 		try {
@@ -180,7 +190,10 @@ public class MyModel extends Observable implements Model {
 		}
 
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return load the data from the file
+	 */
 	@Override
 	public void loadFromFile(String name, String fileName) {
 		try {
@@ -200,7 +213,10 @@ public class MyModel extends Observable implements Model {
 		}
 
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return checks the size of the file
+	 */
 	@Override
 	public int sizeInMemory(String name) {
 		if (mazeMap.containsKey(name))
@@ -227,7 +243,10 @@ public class MyModel extends Observable implements Model {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/**
+	*@author Yaniv and Asaf
+	*@return the maze that have that name
+	 */
 	@Override
 	public Maze3D getMaze(String name) {
 		if (mazeMap.containsKey(name))
@@ -235,7 +254,10 @@ public class MyModel extends Observable implements Model {
 		else
 			return null;
 	}
-	
+	/**
+	*@author Yaniv and Asaf
+	*@return save the hashmap
+	 */
 	@Override
 	public void saveMaps(){
 		try {
@@ -249,7 +271,10 @@ public class MyModel extends Observable implements Model {
 		}
 	}
 	
-
+	/**
+	*@author Yaniv and Asaf
+	*@return load the saved mazes
+	 */
 	public void loadMaps(){
 		File f = new File("maps");
 		if(!(f.exists()))
