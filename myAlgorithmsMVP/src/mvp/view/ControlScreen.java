@@ -1,20 +1,15 @@
 package mvp.view;
 
-import java.awt.Desktop;
 import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -29,7 +24,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -51,14 +45,7 @@ public class ControlScreen extends BasicWindow implements View {
 	private Game game;
 	private boolean gameOn = false;
 	private String gameName = null;
-	private boolean hasListeners = false;
-
-	public void setConnectedToServer(boolean connectedToServer) {
-		this.connectedToServer = connectedToServer;
-	}
-
 	private boolean hasSolution;
-	private boolean connectedToServer;
 
 	public Game getGame() {
 		return game;
@@ -68,10 +55,19 @@ public class ControlScreen extends BasicWindow implements View {
 		this.game = game;
 	}
 
+	/**
+	 * @author Yaniv and Asaf
+	 * @return a super constractor
+	 */
 	public ControlScreen(String title, int width, int height) {
 		super(title, width, height);
 	}
 
+	/**
+	 * @author Yaniv and Asaf
+	 * @return set the gui and form the menu using the swt wigit and gets
+	 *         buttons to start the game
+	 */
 	@Override
 	void initWidgets() {
 		shell.setSize(500, 500);
@@ -79,41 +75,20 @@ public class ControlScreen extends BasicWindow implements View {
 		canvas = new Canvas(shell, SWT.FILL);
 		canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		shell.open();
-		
 
-		canvas.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseUp(MouseEvent arg0) {
-
-			}
-
-			@Override
-			public void mouseDown(MouseEvent arg0) {
-				if (gameOn) {
-					game.fillEntitiesQueue();
-					game.draw();
-				}
-
-			}
-
-			@Override
-			public void mouseDoubleClick(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		//Create the menu bar.
+		// Create the menu bar.
 		Menu menuBar = new Menu(shell, SWT.BAR | SWT.LEFT_TO_RIGHT);
-		//Create a menu head.
+		// Create a menu head.
 		Menu gameMenu = new Menu(menuBar);
 		MenuItem gameItems = new MenuItem(menuBar, SWT.CASCADE);
 		gameItems.setText("&Game");
 		gameItems.setMenu(gameMenu);
-		//Adding item to the menu.
+		// Adding item to the menu.
 		MenuItem newGame = new MenuItem(gameMenu, SWT.NONE);
 		newGame.setText("New Game");
+
+		for (Listener lis : newGame.getListeners(SWT.Selection))
+			newGame.removeListener(SWT.Selection, lis);
 
 		newGame.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -122,9 +97,7 @@ public class ControlScreen extends BasicWindow implements View {
 					TextScreen t = new TextScreen(display, "new maze 3D game", 200, 165);
 					t.run();
 					setChanged();
-					if (((t.getName() != "") && (t.getLayer() != "") && (t.getRows() != "") && (t.getCulomns() != ""))
-							&& ((t.getName() != null) && (t.getLayer() != null) && (t.getRows() != null)
-									&& (t.getCulomns() != null))) {
+					if (t.getTextCommand() != null) {
 						notifyObservers("generate 3d maze" + " " + t.getTextCommand());
 						setChanged();
 						notifyObservers("display " + t.getName());
@@ -136,49 +109,44 @@ public class ControlScreen extends BasicWindow implements View {
 								Display.getDefault().asyncExec(new Runnable() {
 									public void run() {
 										if (gameOn) {
-											if (!hasListeners) {
 
-												canvas.addKeyListener(new KeyListener() {
+											canvas.addKeyListener(new KeyListener() {
 
-													@Override
-													public void keyReleased(KeyEvent arg0) {
+												@Override
+												public void keyReleased(KeyEvent arg0) {
 
-													}
+												}
 
-													@Override
-													public void keyPressed(KeyEvent arg0) {
-														if (arg0.keyCode == SWT.ARROW_UP)
-															game.moveCharacter(DIRECTION.UP);
+												@Override
+												public void keyPressed(KeyEvent arg0) {
+													if (arg0.keyCode == SWT.ARROW_UP)
+														game.moveCharacter(DIRECTION.UP);
 
-														else if (arg0.keyCode == SWT.ARROW_DOWN)
-															game.moveCharacter(DIRECTION.DOWN);
+													else if (arg0.keyCode == SWT.ARROW_DOWN)
+														game.moveCharacter(DIRECTION.DOWN);
 
-														else if (arg0.keyCode == SWT.ARROW_LEFT)
-															game.moveCharacter(DIRECTION.LEFT);
+													else if (arg0.keyCode == SWT.ARROW_LEFT)
+														game.moveCharacter(DIRECTION.LEFT);
 
-														else if (arg0.keyCode == SWT.ARROW_RIGHT)
-															game.moveCharacter(DIRECTION.RIGHT);
+													else if (arg0.keyCode == SWT.ARROW_RIGHT)
+														game.moveCharacter(DIRECTION.RIGHT);
 
-														else if (arg0.keyCode == 122)
-															game.moveCharacter(DIRECTION.UP_LAYER);
+													else if (arg0.keyCode == 122)
+														game.moveCharacter(DIRECTION.UP_LAYER);
 
-														else if (arg0.keyCode == 120)
-															game.moveCharacter(DIRECTION.DOWN_LAYER);
+													else if (arg0.keyCode == 120)
+														game.moveCharacter(DIRECTION.DOWN_LAYER);
 
-														game.setGameBoard(canvas);
-														game.fillEntitiesQueue();
-														game.draw();
-													}
-												});
-												hasListeners = true;
-											}
+													game.setGameBoard(canvas);
+													game.fillEntitiesQueue();
+													game.draw();
+												}
+											});
 										}
 									}
 								});
-
 							}
 						}).start();
-
 						break;
 					}
 				}
@@ -204,14 +172,17 @@ public class ControlScreen extends BasicWindow implements View {
 							.readObject(new Maze3D(3, 3, 3)));
 					displayMaze(newMaze);
 				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 				gameOn = true;
 				new Thread(new Runnable() {
 					public void run() {
+
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								if (gameOn) {
@@ -251,10 +222,8 @@ public class ControlScreen extends BasicWindow implements View {
 								}
 							}
 						});
-
 					}
 				}).start();
-
 			}
 
 		});
@@ -285,7 +254,7 @@ public class ControlScreen extends BasicWindow implements View {
 
 			}
 		});
-
+		MenuItem sep2 = new MenuItem(gameMenu, SWT.SEPARATOR);
 		MenuItem Exit = new MenuItem(gameMenu, SWT.NONE);
 		Exit.setText("Exit");
 		for (Listener lis : Exit.getListeners(SWT.Selection))
@@ -312,16 +281,13 @@ public class ControlScreen extends BasicWindow implements View {
 					game.setShowHints(false);
 				else {
 					if (!hasSolution) {
+						hasSolution = true;
 						MaxTextScreen f = new MaxTextScreen(display, "give solution method", 400, 400);
 						f.run();
 						setChanged();
 						notifyObservers("solve " + gameName + " " + f.getSolveName());
-						if (connectedToServer) {
-							setChanged();
-							notifyObservers("display solution " + gameName);
-							hasSolution = true;
-							game.setShowHints(true);
-						}
+						setChanged();
+						notifyObservers("display solution " + gameName);
 					} else {
 						game.setShowHints(true);
 					}
@@ -343,29 +309,17 @@ public class ControlScreen extends BasicWindow implements View {
 			@Override
 			public void handleEvent(Event arg0) {
 
-				try {
-					Desktop.getDesktop().browse(new URI("https://www.youtube.com/watch?v=EJCFNww_Iyc"));
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (URISyntaxException e) {
-					e.printStackTrace();
-				}
-
 			}
 
-		});
-		MenuItem sep3 = new MenuItem(helpMenu, SWT.SEPARATOR);
-		MenuItem openAbout = new MenuItem(helpMenu, SWT.CHECK);
-		openAbout.setText("About");
-		openAbout.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-
-			}
 		});
 
 		shell.setMenuBar(menuBar);
 	}
 
+	/**
+	 * @author Yaniv and Asaf
+	 * @return display the current maze
+	 */
 	@Override
 	public void displayMaze(Maze3D maze) {
 		if (game != null)
@@ -388,6 +342,10 @@ public class ControlScreen extends BasicWindow implements View {
 		});
 	}
 
+	/**
+	 * @author Yaniv and Asaf
+	 * @return display the inserted message
+	 */
 	@Override
 	public void displayMessage(String message) {
 
